@@ -1,0 +1,682 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+    <title>
+Course Staff | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/TODO/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/TODO">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/TODO">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/TODO">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<header>
+  <h1>Meet the Course Staff</h1>
+</header>
+
+<h2> Teaching Assistants </h2>
+
+<p>
+    Teaching Assistants (TAs) help teach and run the course.
+    Some TAs have access to sensitive information, and so are listed first.
+    A TA with the "@" tag has access to the cs88@berkeley.edu inbox, and so
+    will see (and likely respond to) anything that goes through that email. A TA
+    with the "DSP" tag has access to DSP information, and so will see anything
+    related to accommodations.
+  </p>
+
+  
+  
+    <div class='row'>
+
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/isabelle-ng.jpg" alt="Isabelle Ng" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Isabelle Ng
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              
+                <div class="badge"> @</div>
+              
+              
+                <div class="badge"> DSP</div>
+              
+              <a href="mailto:isabelle.ng@berkeley.edu">isabelle.ng@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hi there! I am a senior CS/DS/Music Major from San Jose, CA and this is my 4th semester being a TA for c88c/cs61a. I love writing songs and learning more about HCI and NLP. Excited to meet you all and have an awesome semester!</li>
+            
+            
+          </ul>
+        </div>
+
+      </div>
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/mira-wagner.jpg" alt="Mira Wagner" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Mira Wagner
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              
+                <div class="badge"> @</div>
+              
+              
+                <div class="badge"> DSP</div>
+              
+              <a href="mailto:mirawagner@berkeley.edu">mirawagner@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hi! I am a junior majoring in data science and linguistics. I love reading, especially mysteries, swimming and baking! Excited for this semester :)</li>
+            
+            
+          </ul>
+        </div>
+
+      </div>
+      
+
+    </div>
+  
+    <div class='row'>
+
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/rebecca-dang.jpg" alt="Rebecca Dang" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            <a href="https://phrdang.github.io/">Rebecca Dang</a>
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              
+                <div class="badge"> @</div>
+              
+              
+                <div class="badge"> DSP</div>
+              
+              <a href="mailto:rdang@berkeley.edu">rdang@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hey there, I'm a 5th year MS EECS student and this is my fifth semester teaching C88C! Happy to chat about this course, classes and clubs at Berkeley, professional development, guitar, books, movies, TV, music, and more :D</li>
+            
+            
+          </ul>
+        </div>
+
+      </div>
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/alicia-wang.jpg" alt="Alicia Wang" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Alicia Wang
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              
+                <div class="badge"> @</div>
+              
+              
+              <a href="mailto:awwang629@berkeley.edu">awwang629@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hi! I am a junior studying Data Science and Cognitive Science. I love playing badminton and traveling! Excited to meet everyone!</li>
+            
+            
+          </ul>
+        </div>
+
+      </div>
+      
+
+    </div>
+  
+    <div class='row'>
+
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/dhruv-syngol.jpg" alt="Dhruv Syngol" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Dhruv Syngol
+          
+          
+            
+              <div class="badge badge-info">he/him/his</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              
+                <div class="badge"> @</div>
+              
+              
+              <a href="mailto:dhruvsyngol@berkeley.edu">dhruvsyngol@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hey everyone, I'm a junior studying Data Science and Economics, originally from the Chicago Suburbs! I love to play pickleball, explore cafes and restaurants, and go on hikes! Super excited for this semester!</li>
+            
+            
+          </ul>
+        </div>
+
+      </div>
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp25/grace-baek.jpg" alt="Grace Baek" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Grace Baek
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              
+              
+              <a href="mailto:gracebaek@berkeley.edu">gracebaek@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hi! I'm Grace, a senior majoring in Computer Science and Economics and this is my 2nd semester teaching C88C. In my free time, I like baking, trying new cafes, and watching kdramas :) Super excited to meet everyone!</li>
+            
+            
+          </ul>
+        </div>
+
+      </div>
+      
+
+    </div>
+  
+    <div class='row'>
+
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/grace-xie.png" alt="Grace Xie" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Grace Xie
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              
+              
+              <a href="mailto:gracexie@berkeley.edu">gracexie@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hello! My name is Grace. I'm a third-year majoring in MCB and Data Science :0 I love reading sci-fi and baking in my free time.</li>
+            
+            
+          </ul>
+        </div>
+
+      </div>
+      
+
+    </div>
+  
+
+<h2> Tutors </h2>
+
+  <p>
+    Course tutors hold office hours, teach tutoring sections, and help with many other aspects of the course.
+  </p>
+
+  
+  
+    <div class='row'>
+
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/cynthia-shao.jpg" alt="Cynthia Shao" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Cynthia Shao
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              <a href="mailto:cynthia_shao@berkeley.edu">cynthia_shao@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hey! I'm Cynthia, a sophomore in data science. You can find me dancing in The 510, jogging around campus, and finding/making/eating food at 1AM. See you in session :)</li>
+            
+          </ul>
+        </div>
+      </div>
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/maryam-akelyan.jpg" alt="Maryam Akelyan" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Maryam Akelyan
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              <a href="mailto:maryam.akelyan@berkeley.edu">maryam.akelyan@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hi! I'm Maryam, a junior majoring in Data Science and MCB, and I'm from La Crescenta, CA! In my free time I like to watch sitcoms and sci-fi shows. Super excited to meet you all! :)</li>
+            
+          </ul>
+        </div>
+      </div>
+      
+
+    </div>
+  
+    <div class='row'>
+
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/orazaly-kabdrakhmanov.jpg" alt="Orazaly Kabdrakhmanov" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Orazaly Kabdrakhmanov
+          
+          
+            
+              <div class="badge badge-info">he/him/his</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              <a href="mailto:kabdrakhmanov@berkeley.edu">kabdrakhmanov@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hi there! I'm Orazaly and I am a senior majoring in Data Science. I like playing tennis and video games(CS2). Hope you enjoy the class!</li>
+            
+          </ul>
+        </div>
+      </div>
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/reema-rafifar.jpg" alt="Reema Rafifar" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Reema Rafifar
+          
+          
+            
+              <div class="badge badge-info">she/her/hers</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              <a href="mailto:reemarafifar@berkeley.edu">reemarafifar@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hi everyone! I'm Reema, a junior majoring in Neuroscience & Data Science. I absolutely love movies so come talk to me about your favorite films! I can't wait to get through C88C with you!</li>
+            
+          </ul>
+        </div>
+      </div>
+      
+
+    </div>
+  
+    <div class='row'>
+
+      
+      <div class="col-xs-12 col-sm-6 col-md-6 staffer">
+
+        <div class="col-xs-3 col-sm-12 col-md-3 staffer-img">
+          <img class="img-responsive img-circle center-block" src="https://github.com/Cal-CS-61A-Staff/staff-images/raw/master/sp26/thompson-zhou.jpg" alt="Thompson Zhou" onerror="this.style.opacity=0">
+        </div>
+        <div class="col-xs-9 col-sm-12 col-md-9">
+          <h3 class="staff-name">
+          
+            Thompson Zhou
+          
+          
+            
+              <div class="badge badge-info">he/him/his</div>
+            
+          
+          </h3>
+          <ul>
+            
+            <li>
+              
+              <a href="mailto:chuanjunzhou@berkeley.edu">chuanjunzhou@berkeley.edu</a>
+            </li>
+            
+            
+            <br>
+            <li class="section bio">Hi! I'm Thompson, a third year double majoring in Applied Math and Data Science. During my free time, I like to read, play video games, and follow sports.</li>
+            
+          </ul>
+        </div>
+      </div>
+      
+
+    </div>
+  
+
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+  </body>
+</html>

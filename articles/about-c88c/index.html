@@ -1,0 +1,657 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+    <title>
+C88C Syllabus & Course Policies | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/TODO/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/TODO">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/TODO">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/TODO">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>C88C Syllabus & Course Policies</h1>
+    </header>
+     <blockquote><p>CS 88, DATA C88C, "88C"... It's all the same. :)</p></blockquote>
+
+
+<h2 id="course-description">Course Description</h2>
+
+
+<p>CS 88 is a "connector" for Data 8 that is
+designed for students who would like a more complete introduction to
+Computer Science. We will cover a
+variety of topics such as functional programming, data abstraction,
+object-oriented programming, and program complexity.
+This course will be taught primarily in Python.
+However, we are interested in teaching you foundational programming ideas, not
+just how to use one particular programming language.
+Once you have learned the essence of programming and the concepts that
+appear in various forms in programming languages, you will be able to
+pick up other languages and other programming concepts rapidly.</p>
+
+<p>The material for this course has significant overlap with CS 61A. We do not cover
+the interpretation section of CS61A. If you are certain that you want to
+major or minor in Computer Science, CS 61A is the right introductory
+course.  You can take CS 61A for credit after having taken CS 88.
+However, you cannot take CS 88 for credit after having taken CS 61A.
+Data 8 and CS 88 together satisfy the knowledge prerequisite for CS 61B.</p>
+
+
+<h3 id="exams-amp-proctoring">Exams &amp; Proctoring</h3>
+
+
+<p>We will have two exams, a midterm and a final exam. Dates are on the primary calendar. For each exam, we expect students to take the exam in person at the time of the exam. If you have a verified academic or religious conflict, please contact the course staff as soon as possible. We will have limited alternatives available.</p>
+
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+
+<p>It is recommended, but not strictly required, that you are currently enrolled in or have taken Data 8.
+There is no formal programming-related prerequisite for
+CS 88. You do not need to be familiar with any particular
+programming language.</p>
+
+
+<h2 id="course-activities">Course Activities</h2>
+
+
+<p><strong>Lecture:</strong> There will be two 50-minute lectures per week. We strongly encourage you to attend lectures, but will not enforce this. Lecture recordings will be posted online, typically the next day.</p>
+
+<p><strong>Lecture Self-Checks:</strong> Every lecture will have a short series of questions, which can be answered during or online after the lecture. These questions will help check your understanding. Each lecture "quiz" is worth 1 point, and are due roughly 48 hours after each lecture, however You have unlimited attempts during that period.</p>
+
+<p><strong>Labs:</strong> This course also includes weekly two-hour "lab" sections.
+The first hour will be going over a discussion-based worksheet and writing code on paper.
+The second hour will be writing code on your own computer.</p>
+
+<p>Each lab section will be lead by a teaching assistant, and are designed to be interactive. Labs assignments are short, relatively simple exercises designed to introduce a new topic.</p>
+
+<p>Most lab assignments are designed to be completed within the two hour time slot.</p>
+
+<p>Labs will generally be released on Monday (subject to change), and are due Friday by 11:59 PM PST. They are graded on correctness.</p>
+
+<p><strong>Homework:</strong> There will usually be one homework assignment per week that will be more involved and
+are meant to illustrate and explore new topics. You are encouraged to discuss the
+homework with other students, but your final solution should be developed alone.
+Homework will be graded on correctness.</p>
+
+<p>Homework will generally be released on every Tuesday, and is due 8 days after release date, Wednesdays by 11:59 PM PST.</p>
+
+<p><strong>Projects:</strong> There will be 2 projects intended to teach you how to
+combine ideas from the course in interesting ways. Projects will be graded on correctness.</p>
+
+<p>Project release/due dates will be communicated on the course calendar/Ed page.</p>
+
+<p>Projects will offer extra credit for early submission.</p>
+
+<p><strong>Exams:</strong> This course will have one in-person midterm and one in-person final. Exact details will be provided soon.</p>
+
+<p><strong>Office Hours:</strong> Attending office hours is another great way to succeed in
+this course. Office hours are held by TAs and the instructor each week. An
+office hours schedule appears on the course website.
+In office hours, you can ask questions about the material, receive guidance on
+assignments, work with peers and course staff in a small group setting, find
+project partners, and learn about computer science at Berkeley.</p>
+
+<p><strong>Optional Sections:</strong> In addition to the weekly class meetings, the course
+will include optional events such as review sessions and tutoring sections that are designed to help
+you master the course material and complete the assignments.
+Details of these events will be announced as they approach.</p>
+
+
+<h2 id="materials">Materials</h2>
+
+
+<p>The online textbook for the course is <a href="https://www.composingprograms.com">Composing Programs</a>, which was
+created specifically for CS61A but is also the best basis for this course.
+Readings for each lecture appear in the course schedule.
+We will be jumping around a little due to the data-centric
+orientation of the course. You should complete the readings before
+attending lecture.</p>
+
+<p>In addition, the course website and Ed will contain additional links to
+guides, handouts, and practice materials available for the course.</p>
+
+
+<h2 id="chatgpt-ai-tools-and-the-internet">ChatGPT, AI Tools and The Internet</h2>
+
+
+<p>While you may search for <em>conceptual</em> questions, e.g. "How do I add an item to a list in Python", you <strong>may not search under any circumstances for specific questions assigned in class.</strong></p>
+
+<p>This policy applies whether you're using ChatGPT, Google Search, or talking with your peers–which are all useful resources!</p>
+
+<p>On your assignments you will be asked to cite what sources you consulted, similar to a research paper. (Though not so formally.) Code is like writing and ideas, it gets built up from many previous examples and ideas, and we should cite those.</p>
+
+
+<h2 id="grading">Grading</h2>
+
+
+<p>Your course grade is computed using a point system with the following distribution:</p>
+
+<table border="1" cellpadding="5" cellspacing="0" class="table table-striped">
+	<thead>
+		<tr>
+			<th rowspan="2" width="20ch">Category</th>
+			<th rowspan="2" width="15ch">Num Graded</th>
+			<th colspan="2" width="24ch">No Attendance</th>
+			<th colspan="2" width="24ch">Attendance</th>
+		</tr>
+		<tr>
+			<th>Points</th>
+			<th>%</th>
+			<th>Points</th>
+			<th>%</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Attendance</td>
+			<td>10</td>
+			<td>0</td>
+			<td>0.00%</td>
+			<td>20</td>
+			<td>5.00%</td>
+		</tr>
+		<tr>
+			<td>Labs</td>
+			<td>10</td>
+			<td>30</td>
+			<td>7.50%</td>
+			<td>30</td>
+			<td>7.50%</td>
+		</tr>
+		<tr>
+			<td>Homework</td>
+			<td>10</td>
+			<td>60</td>
+			<td>15.00%</td>
+			<td>60</td>
+			<td>15.00%</td>
+		</tr>
+		<tr>
+			<td>Maps</td>
+			<td>1</td>
+			<td>36</td>
+			<td>9.00%</td>
+			<td>36</td>
+			<td>9.00%</td>
+		</tr>
+		<tr>
+			<td>Ants</td>
+			<td>1</td>
+			<td>54</td>
+			<td>13.50%</td>
+			<td>54</td>
+			<td>13.50%</td>
+		</tr>
+		<tr>
+			<td>Midterm</td>
+			<td>1</td>
+			<td>80</td>
+			<td>20.00%</td>
+			<td>70</td>
+			<td>17.50%</td>
+		</tr>
+		<tr>
+			<td>Final</td>
+			<td>1</td>
+			<td>120</td>
+			<td>30.00%</td>
+			<td>110</td>
+			<td>27.50%</td>
+		</tr>
+		<tr>
+			<td>Lecture Self-Checks</td>
+			<td>20</td>
+			<td>20</td>
+			<td>5.00%</td>
+			<td>20</td>
+			<td>5.00%</td>
+		</tr>
+		<tr>
+			<td><strong>Total Points</strong></td>
+			<td></td>
+			<td><strong>400</strong></td>
+			<td><strong>100.00%</strong></td>
+			<td><strong>400</strong></td>
+			<td><strong>100.00%</strong></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>This means the total points scale is out of 400 points. In this class, we will use
+grading bins to determine your grade, so you will know the number of points you
+need to get your desired grade in the class. Remember, with grading bins, there are no comparisons to your peers,
+no curves, no guessing or complex formulas.</p>
+
+
+<h3 id="grade-bins">Grade Bins</h3>
+
+
+<pre><code>              A  ≥ 380    A&#x2d;  ≥ 360
+ B+  ≥ 330    B  ≥ 312    B&#x2d;  ≥ 292
+ C+  ≥ 274    C  ≥ 258    C&#x2d;  ≥ 232
+              D  ≥ 172</code></pre>
+
+
+<h3 id="attendance-options">Attendance Options</h3>
+
+
+<p>You will have noticed that there are two grading options: With or Without attendance. During weeks 3 or 4, we will send out a form where <em>you</em> get to choose whether attending weekly sections are part of your grade calculation.</p>
+
+<p>We encourage you to consider the benefits of attending sections, as they provide valuable opportunities for discussion, collaboration, and support.
+However, this means you must also commit to showing up regularly, as we will not be able to accommodate exemptions for when you miss class.
+(Attending 10 sections will earn you full credit, as we recognize that sometimes you are ill or life gets in the way...)</p>
+
+
+<h3 id="policies">Policies</h3>
+
+
+<ul>
+  <li><em>Self-Checks</em>: We will count your 20 best self-check submissions. (There are typically 1 self-check per lecture. "Bonus" self-checks are for practice, but can replace and missing self-check questions.)</li>
+  <li><em>Clobber Policy</em>: This allows your final exam to replace your midterm score, if it is better based on the percentage. That is, your midterm score is always <code>max(midterm&#x2d;%, final&#x2d;%) * midterm_points pts</code>. (<code>midterm_points</code> is the total points possible on the midterm, either 70 or 80 points, depending on the grading option you choose.)</li>
+</ul>
+
+
+<h2 id="late-policy">Late Policy</h2>
+
+<p>Everyone has <strong>9 slip days</strong>, which can be applied to late submissions of labs, homework, and projects.</p>
+
+<ul>
+  <li>Each assignment can have a <strong>max of 3 slip days</strong> applied to it. These slip days will be automatically applied at the end of the semester to maximize your grade.</li>
+  <li><p>If you have no remaining slip days, there is a -25% reduction to your total score for every day that the assignment is late.</p>
+
+  <ul>
+    <li>After 3 late days, you can no longer receive credit for the submission, unless an extension has been approved before the assignment deadline.</li>
+  </ul></li>
+</ul>
+
+<p>For exceptional circumstances, please fill out the <a href="https://go.c88c.org/extensions">extension form</a>. When making extension requests, please:</p>
+
+<ul>
+  <li>Send requests before the assignment deadline</li>
+  <li>Send one extension request per assignment</li>
+</ul>
+
+<p><strong>Assignment Drops:</strong> We will drop your lowest homework and lab score from your final grade calculation.</p>
+
+<p><strong>Self-Checks:</strong> Lecture self-checks are not eligible for slip days. You will receive full credit for late submissions, as long as they are open on Gradescope. These are graded on correctness, but you have infinite attempts. <strong>Self-Checks must be correct to earn full points.</strong></p>
+
+
+<h2 id="device-lending-options">Device Lending options</h2>
+
+<p>Students can access device lending options through the Student Technology Equity Program <a href="https://studenttech.berkeley.edu/devicelending">STEP program</a>.</p>
+
+
+<h2 id="data-science-student-climate">Data Science Student Climate</h2>
+
+<p><a href="https://data.berkeley.edu/academics/undergraduate-programs">Data Science Undergraduate Studies</a> faculty and staff are committed to creating a community where every person feels <a href="https://data.berkeley.edu/equity-inclusion">respected, included, and supported</a>. We recognize that incidents may happen, sometimes unintentionally, that run counter to this goal. There are many things we can do to try to improve the climate for students, but we need to understand where the challenges lie. If you experience a remark, or disrespectful treatment, or if you feel you are being ignored, excluded or marginalized in a course or program-related activity, please speak up. Consider talking to your instructor, but you are also welcome to contact Executive Director Christina Teller at cpteller@berkeley.edu or report an incident anonymously through this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfBwaUe7VMQz6VzkYFvf4KYwNSTve9iJlBSQyAmsXoSE0LnWw/viewform">online form</a>.</p>
+
+
+<h2 id="community-standards">Community Standards</h2>
+
+<p>Ed is a formal, academic space. We must demonstrate appropriate respect, consideration, and compassion for others. Please be friendly and thoughtful; our community draws from a wide spectrum of valuable experiences. For further reading, please reference <a href="https://diversity.berkeley.edu/principles-community">Berkeley’s Principles of Community</a> and the <a href="https://sa.berkeley.edu/sites/default/files/Code%20of%20Conduct_January%202016.pdf">Berkeley Campus Code of Student Conduct</a>.</p>
+
+
+<h2 id="learning-cooperatively">Learning Cooperatively</h2>
+
+
+<p>With the obvious exception of exams and take-home quizzes, we encourage you to
+discuss <em>all</em> of the course activities with your friends and classmates as you
+are working on them. You will definitely learn more in this class if you work
+with others than if you do not.  Ask questions, answer questions, and share
+ideas liberally.</p>
+
+<p>Since you're working collaboratively, keep your project partner and TA
+informed. If some medical or personal emergency takes you away from the course
+for an extended period, or if you decide to drop the course for any reason,
+please don't just disappear silently! You should inform your project partner,
+so that nobody is depending on you to do something you can't finish.</p>
+
+
+<h2 id="academic-honesty">Academic Honesty</h2>
+
+
+<p>Cooperation has a limit, however, and in CS 88 that limit is sharing code. Feel
+free to discuss the problems with others beforehand, but not the code that
+solves them. Projects can be completed in pairs. You can share
+everything with your partner. Do not share your code with anyone but your
+partner, and do not read anyone but your partner's code. Do not post your
+solutions online. Do not use pastebin or GitHub, which post your work publicly
+by default. Do not read solutions that you find online. Write your own programs
+and keep them to yourself. In the case of office hours, sections, and in the presence of a TA, you may see someone else's code to help them debug, but you should not use this as a guide to your own solution.</p>
+
+<p>If you find a solution online, please email a link to that solution to the instructor.</p>
+
+<p>We expect you to hand in your own work, take your own tests, and complete your
+own projects. The assignments and evaluations are structured to help you
+learn, which is why you're here. The course staff works hard to put together
+this course, and we ask in return that you respect the integrity of the course
+by not misrepresenting your work.</p>
+
+<p>The EECS Department Policy on Academic Dishonesty says, "Copying all or part of
+another person's work, or using reference materials not specifically allowed,
+are forms of cheating and will not be tolerated." The policy statement goes on
+to explain the penalties for cheating, which range from a zero grade for the
+test up to dismissal from the University, for a second offense.</p>
+
+<blockquote><p><strong>In this class, cheating on an assignment can result in -100% on that assignment.</strong>
+<strong>Cheating on an exam can result in an F in the course and a report to the the Center for Student Conduct, as well as giving up the ability to clobber the exam</strong></p></blockquote>
+
+<p>The creation of computer programs is the most rewarding and the same time most frustrating activity: As exhilarating as it is when a program works, as frustrating can it be when it doesn't. This frustration, however, is a very important part of the learning experience: You are sharpening your own analytical skills by having the computer constantly test your hypotheses. Sharing code and short cutting the mental discovery process that goes along with creating code strips you off the most important part of this class. If you find you are running out of ideas, take a break and do something else, then go back to it. If you end up not finding a solution after major time spent, try to formulate in your head what your most constructive question would be and seek help from a peer, a TA, or the professor. The TAs, academic interns, and instructor are all here to help you succeed. If you cannot solve a problem in time for the deadline, try to come as close as you can, even if you might not end up getting points for it.  You are attending Berkeley for the experience, not for the grades. Don't strip yourself off that experience by copying somebody else's code.</p>
+
+
+<h2 id="a-parting-thought">A Parting Thought</h2>
+
+
+<p>The main goal of this course is to help you learn and enjoy the material.
+Please don't hesitate to reach out to the staff for any questions or concerns.
+We are here to help you however we can. Welcome to CS 88!</p>
+
+<hr/>
+
+
+<h2 id="resources-for-berkeley-students">Resources for Berkeley Students</h2>
+
+
+<p>Should you find yourself in need of help, beyond just the topics of CS88, the course staff are more than happy to help you access resources of all kinds. UC Berkeley has many resources, whether it's food assistance, counseling, or tutoring, we'll do our best to get you what you need.</p>
+
+
+<h3 id="center-for-access-to-engineering-excellence-caee">Center for Access to Engineering Excellence (CAEE)</h3>
+
+
+<p>The <a href="https://engineering.berkeley.edu/student-services/academic-support">Center for Access to Engineering Excellence</a> (227 Bechtel Engineering Center) is an inclusive center that offers study spaces, nutritious snacks, and tutoring in >50 courses for Berkeley engineers and other majors across campus. The Center also offers a wide range of professional development, leadership, and wellness programs, and loans iclickers, laptops, and professional attire for interviews.</p>
+
+
+<h3 id="disabled-students-program-dsp">Disabled Students’ Program (DSP)</h3>
+
+
+<p>The [Disabled Student’s Program]<a href="260 César Chávez Student Center #4250; 510-642-0518">dsp</a> serves students with disabilities of all kinds. Services are individually designed and based on the specific needs of each student as identified by DSP’s Specialists.</p>
+
+
+<h3 id="counseling-and-psychological-services">Counseling and Psychological Services</h3>
+
+
+<p>The main University Health Services <a href="http://uhs.berkeley.edu/">Counseling and Psychological Services</a> staff is located at the Tang Center (2222 Bancroft Way; 642-9494) and provides confidential assistance to students managing problems that can emerge from illness such as financial, academic, legal, family concerns, and more.</p>
+
+<p>To improve access for engineering students, a licensed psychologist from the Tang Center also holds walk-in appointments for confidential counseling in 241 Bechtel Engineering Center (<a href="https://engineering.berkeley.edu/student-services/advising-counseling">Schedule</a>).</p>
+
+
+<h3 id="the-care-line-path-to-care-center">The Care Line (PATH to Care Center)</h3>
+
+
+<p>The <a href="https://care.berkeley.edu/care-line/">Care Line</a> (510-643-2005) is a 24/7, confidential, free, campus-based resource for urgent support around sexual assault, sexual harassment, interpersonal violence, stalking, and invasion of sexual privacy. The Care Line will connect you with a confidential advocate for trauma-informed crisis support including time-sensitive information, securing urgent safety resources, and accompaniment to medical care or reporting.</p>
+
+
+<h3 id="ombudsperson-for-students">Ombudsperson for Students</h3>
+
+
+<p>The <a href="http://students.berkeley.edu/Ombuds">Ombudsperson for Students</a> (102 Sproul Hall; 642-5754) provides a confidential service for students involved in a University-related problem (academic or administrative), acting as a neutral complaint resolver and not as an advocate for any of the parties involved in a dispute. The Ombudsman can provide information on policies and procedures affecting students, facilitate students’ contact with services able to assist in resolving the problem, and assist students in complaints concerning improper application of University policies or procedures. All matters referred to this office are held in strict confidence. The only exceptions, at the sole discretion of the Ombudsman, are cases where there appears to be imminent threat of serious harm.</p>
+
+
+<h3 id="uc-berkeley-food-pantry">UC Berkeley Food Pantry</h3>
+
+
+<p>The <a href="https://pantry.berkeley.edu/">UC Berkeley Food Pantry</a> (#68 Martin Luther King Student Union) aims to reduce food insecurity among students and staff at UC Berkeley, especially the lack of nutritious food. Students and staff can visit the pantry as many times as they need and take as much as they need while being mindful that it is a shared resource. The pantry operates on a self-assessed need basis; there are no eligibility requirements. The pantry is not for students and staff who need supplemental snacking food, but rather, core food support.</p>
+
+
+<h3 id="the-uc-berkeley-basic-needs-center">The UC Berkeley Basic Needs Center</h3>
+
+
+<p>The <a href="https://basicneeds.berkeley.edu">Basic Needs Center</a> team is committed to fostering belonging and justice on the UC Berkeley campus through a robust model of prevention, intervention and emergency relief efforts. Our efforts aim to combat the structural drivers of basic needs insecurity such as rising income inequality, increasing cost of living, inadequate high school preparation, and more. Using a holistic and systematic approach, we target the different facets of basic needs insecurity on campus in order to consistently reduce the number of students that require emergency resources.</p>
+
+
+<h3 id="asuc-student-advocate-s-office-sao">ASUC Student Advocate's Office (SAO)</h3>
+
+
+<p>The <a href="https://advocate.berkeley.edu/">Student Advocate's Office (SAO)</a> is a student-run, non-partisan office of the ASUC. They offer free, confidential casework services and resources to any student(s) navigating through issues with the University, including academic, conduct, financial aid, and grievance concerns. All support is centered around students and aims for an equity-based approach.</p>
+
+<hr/>
+
+
+<h2 id="a-word-of-thanks">A Word of Thanks!</h2>
+
+
+<p>This course would not be possible without the contributions of, most especially, John DeNero for CS 61A. Along the way there have been countless faculty and students who have poured hours into developing content and tools for this course. We stand on the shoulders of giants.</p>
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#course-description">Course Description</a></li>
+  <ul>
+    <li><a href="#exams-amp-proctoring">Exams &amp; Proctoring</a></li>
+  </ul>
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#course-activities">Course Activities</a></li>
+  <li><a href="#materials">Materials</a></li>
+  <li><a href="#chatgpt-ai-tools-and-the-internet">ChatGPT, AI Tools and The Internet</a></li>
+  <li><a href="#grading">Grading</a></li>
+  <ul>
+    <li><a href="#grade-bins">Grade Bins</a></li>
+    <li><a href="#attendance-options">Attendance Options</a></li>
+    <li><a href="#policies">Policies</a></li>
+  </ul>
+  <li><a href="#late-policy">Late Policy</a></li>
+  <li><a href="#device-lending-options">Device Lending options</a></li>
+  <li><a href="#data-science-student-climate">Data Science Student Climate</a></li>
+  <li><a href="#community-standards">Community Standards</a></li>
+  <li><a href="#learning-cooperatively">Learning Cooperatively</a></li>
+  <li><a href="#academic-honesty">Academic Honesty</a></li>
+  <li><a href="#a-parting-thought">A Parting Thought</a></li>
+  <li><a href="#resources-for-berkeley-students">Resources for Berkeley Students</a></li>
+  <ul>
+    <li><a href="#center-for-access-to-engineering-excellence-caee">Center for Access to Engineering Excellence (CAEE)</a></li>
+    <li><a href="#disabled-students-program-dsp">Disabled Students’ Program (DSP)</a></li>
+    <li><a href="#counseling-and-psychological-services">Counseling and Psychological Services</a></li>
+    <li><a href="#the-care-line-path-to-care-center">The Care Line (PATH to Care Center)</a></li>
+    <li><a href="#ombudsperson-for-students">Ombudsperson for Students</a></li>
+    <li><a href="#uc-berkeley-food-pantry">UC Berkeley Food Pantry</a></li>
+    <li><a href="#the-uc-berkeley-basic-needs-center">The UC Berkeley Basic Needs Center</a></li>
+    <li><a href="#asuc-student-advocate-s-office-sao">ASUC Student Advocate's Office (SAO)</a></li>
+  </ul>
+  <li><a href="#a-word-of-thanks">A Word of Thanks!</a></li>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+<script src="/sp26/assets/js/storable.js"></script>
+<script src="/sp26/assets/js/env-diagram.js"></script>
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+</script>
+
+  </body>
+</html>
