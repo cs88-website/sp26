@@ -1,5 +1,5 @@
 /* Start/end date of semester. Make sure to change utils.py as well */
-var startDate = '2025-08-27', endDate = '2025-12-19';
+var startDate = '2026-01-21', endDate = '2026-5-15';
 
 /* Calendar Specification */
 var officeHoursCalendarId = 'c_ujrte0b709mkfm25dldctge2p8@group.calendar.google.com';
