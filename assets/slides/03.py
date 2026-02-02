@@ -8,32 +8,7 @@ else:
 
 # Go to C88C
 
-year_in_school = 4
-if year_in_school >= 4:
-	print('Senior')
-elif year_in_school >= 3:
-    print('Junior')
-elif year_in_school >= 2:
-    print('Sophomore')
-else:
-    print('Freshmen')
 
-year_in_school = 4
-if year_in_school >= 4:
-	print('Senior')
-if year_in_school >= 3:
-    print('Junior')
-if year_in_school >= 2:
-    print('Sophomore')
-if year_in_school >= 1:
-    print('Freshmen')
-
-is_even = year_in_school % 2 == 0
-
-# Is Leap Year:
-year = 2024
-year = 2026
-is_leap_year = 'yes' if year % 4 == 0 else 'no...'
 
 temp = 70
 status = "it's hot!" if temp > 85 else 'not hot…'
