@@ -1,13 +1,3 @@
-from math import pi, sqrt
-from operator import add, mul, concat
-from functools import reduce
-
-# Functions are named, and we can assign new names
-
-my_print = print
-
-# my_print('Hello')
-
 def greet(name):
     return 'Hello, ' + name + '!'
 
@@ -15,17 +5,11 @@ say_hello = greet
 
 say_hello('CS88')
 
+# Generalizing patterns using arguments
 
-courses = ['DATA C88C', 'DATA 8', 'POLSCI 2', 'MATH 54']
-depts = [ course.split()[0] for course in courses ]
+from math import pi, sqrt
+from operator import mul
 
-depts.count('DATA')
-
-# Alternative options:
-data_courses = [ c for c in courses if 'DATA' in c ]
-len(data_courses)
-
-<<<<<<< HEAD
 # Functions as arguments
 
 def square(n):
@@ -110,35 +94,6 @@ summation(10000, pi_term)
 
 def pi_error(approx):
     return str((1 - summation(approx, pi_term) / pi) * 100) + '%'
-
-
-def summation(n, term):
-    """Sum the first N terms of a sequence.
-    """
-    total = 0
-    for i in range(n + 1):
-        # total = total + cube(i)
-        # total = total + ident(i)
-        total = total + term(i)
-    return total
-
-def sum_p(n, term):
-    """Sum the first N terms of a sequence.
-    """
-    print('Term: ', term)
-    total = 0
-    for i in range(n + 1):
-        print('i: ', term(i))
-        total = total + term(i)
-    return total
-
-
-=======
->>>>>>> d8a84b3ee391cbdd0e9b0ff0faa90e5576ada2de
-depts = list(map(lambda c: c.split()[0], courses))
-
-data_courses = list(filter(lambda c: 'DATA' in c, courses))
-len(data_courses)
 
 def add_one(n):
     return n + 1
@@ -299,3 +254,45 @@ def group_by_count(result_or_start, next_item):
     else:
         result.append([ item[0], 1 ])
     return result
+
+
+
+def add_one(n):
+    return n + 1
+
+add_one(3)
+
+def make_adder(n):
+    def adder(x):
+        return x + n
+    return adder
+
+add_1 = make_adder(1)
+x = add_1(3)
+
+add_4 = make_adder(4)
+add_4(5)
+
+def compose(f, g):
+    def h(x):
+      return f(g(x))
+    return h
+
+add_2 = make_adder(2)
+add_3 = make_adder(3)
+x = add_2(x)
+
+add_5 = compose(add_2, add_3)
+y = add_5(x)
+
+# compose an add_2 function with square
+# square(add_2(3))
+z = compose(square, make_adder(2))(3)
+
+def leq_maker(c):
+    def leq(val):
+        return val <= c
+    return leq
+
+leq_maker(5)
+leq_maker(5)(3)
