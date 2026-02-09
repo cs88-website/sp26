@@ -8,7 +8,8 @@ say_hello('CS88')
 # Generalizing patterns using arguments
 
 from math import pi, sqrt
-from operator import mul
+from operator import mul, add
+from functools import reduce
 
 # Functions as arguments
 
