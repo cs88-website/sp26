@@ -61,7 +61,7 @@ Study Guide: Recursion | Data C88C Spring 2026
             
             <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
             
-            <li><a href="https://edstem.org/us/courses/TODO/discussion/">Ed</a></li>
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
             
             <li><a href="/sp26/office-hours/">Google Calendar</a></li>
             
@@ -84,13 +84,13 @@ Study Guide: Recursion | Data C88C Spring 2026
                 
                 <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
                 
-                <li><a href="https://www.gradescope.com/courses/TODO">Gradescope</a></li>
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
                 
-                <li><a href="https://bcourses.berkeley.edu/courses/TODO">Lecture Recordings</a></li>
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
                 
                 <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
                 
-                <li><a href="https://bcourses.berkeley.edu/courses/TODO">bCourses</a></li>
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
                 
               </ul>
             </li>
@@ -784,31 +784,24 @@ from the <code>operator</code> module.  You are also allowed to use the equality
 operator.  Find such an expression to use in place of <code>?</code>.</p>
 
 
-
-<pre><code>from operator import sub, mul
-
-def Y(f):
-    &quot;&quot;&quot;The Y (&quot;paradoxical&quot;) combinator.&quot;&quot;&quot;
-    return f(lambda: Y(f))
-
-def Y_tester():
-    &quot;&quot;&quot;
-    &gt;&gt;&gt; tmp = Y_tester()
-    &gt;&gt;&gt; tmp(1)
-    1
-    &gt;&gt;&gt; tmp(5)
-    120
-    &gt;&gt;&gt; tmp(2)
-    2
-    &quot;&quot;&quot;
-<div class="alt solution-6">    "*** YOUR CODE HERE ***"
-    return Y(________)  # Replace 
-</div><div class="solution solution-6">&#x20;&#x20;&#x20;&#x20;&#x72;&#x65;&#x74;&#x75;&#x72;&#x6e;&#x20;&#x59;&#x28;&#x6c;&#x61;&#x6d;&#x62;&#x64;&#x61;&#x20;&#x66;&#x3a;&#x20;&#x6c;&#x61;&#x6d;&#x62;&#x64;&#x61;&#x20;&#x6e;&#x3a;&#x20;&#x31;&#x20;&#x69;&#x66;&#x20;&#x6e;&#x3d;&#x3d;&#x30;&#x20;&#x65;&#x6c;&#x73;&#x65;&#x20;&#x6e;&#x20;&#x2a;&#x20;&#x66;&#x28;&#x29;&#x28;&#x6e;&#x2d;&#x31;&#x29;&#x29;</div></code></pre>
-
-
-        <button id='solution-6' class='btn btn-outline btn-lg solutiontoggle solution'>
-        Toggle Solution<noscript> (enable JavaScript)</noscript>
-        </button>
+            <div class="monaco-storable" id="y_combinator-input" style="height:378px;"></div>
+            <a href="javascript:void" id="modal-link-y_combinator-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-y_combinator-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-y_combinator-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('from operator import sub, mul\n\ndef Y(f):\n    &quot;&quot;&quot;The Y (&quot;paradoxical&quot;) combinator.&quot;&quot;&quot;\n    return f(lambda: Y(f))\n\ndef Y_tester():\n    &quot;&quot;&quot;\n    &gt;&gt;&gt; tmp = Y_tester()\n    &gt;&gt;&gt; tmp(1)\n    1\n    &gt;&gt;&gt; tmp(5)\n    120\n    &gt;&gt;&gt; tmp(2)\n    2\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n    return Y(____________________)  # Replace \n\n', "python", "y_combinator-input"));
+            </script>
         
 
   </div>
