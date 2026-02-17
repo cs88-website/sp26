@@ -278,56 +278,30 @@ an "illegal multibyte sequence" error.</p></blockquote>
         
 
 
-<h3 id="q3-group-by">Q3: Group By</h3>
-
-<p>Write a function that takes in a list <code>s</code> and a function <code>fn</code>, and returns a dictionary that groups the elements of <code>s</code> based on the result of applying <code>fn</code>.</p>
-
-<ul>
-  <li>The dictionary should have one key for each unique result of applying <code>fn</code> to elements of <code>s</code>.</li>
-  <li>The value for each key should be a list of all elements in <code>s</code> that, when passed to <code>fn</code>, produce that key (what it evaluates to).</li>
-</ul>
-
-<p>In other words, for each element <code>e</code> in <code>s</code>, determine <code>fn(e)</code> and add <code>e</code> to the list corresponding to <code>fn(e)</code> in the dictionary.</p>
-
-<!-- 
-
-<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q group_by<button id="copy-code-python3ok-qgroup_by" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
-        <script>
-        document.getElementById("copy-code-python3ok-qgroup_by").onclick = () => copyCode('python3 ok -q group_by', "copy-code-python3ok-qgroup_by");
-        </script>
-        <br/>
-
-<attach-py>
-def group_by(s: list[int], fn) -> dict[int, list[int]]:
-
-<pre><code>&quot;&quot;&quot;Return a dictionary of lists that together contain the elements of s.
-The key for each list is the value that fn returns when called on any of the
-values of that list.
-
-&gt;&gt;&gt; group_by([12, 23, 14, 45], lambda p: p // 10)
-{1: [12, 14], 2: [23], 4: [45]}
-&gt;&gt;&gt; group_by(range(&#x2d;3, 4), lambda x: x * x)
-{9: [&#x2d;3, 3], 4: [&#x2d;2, 2], 1: [&#x2d;1, 1], 0: [0]}
-&quot;&quot;&quot;
-grouped = {}
-for ____ in ____:
-    key = ____
-    if key in grouped:
-        ____
-    else:
-        grouped[key] = ____
-return grouped</code></pre>
-
-</attach-py> -->
+<h3 id="q3-happy-givers">Q3: Happy Givers</h3>
 
 
-            <div class="monaco-storable" id="group_by-input" style="height:360px;"></div>
-            <a href="javascript:void" id="modal-link-group_by-input">Run in 61A Code</a>
-            <div class="modal fade" id="modal-group_by-input" tabindex="-1" role="dialog">
+<p>In a certain discussion section, some people exchange gifts for the holiday season.
+We call two people <strong>happy givers</strong> if they give gifts to each other.
+Implement a function <code>happy_givers</code>, which takes in a <code>gifts</code> dictionary that maps
+people in the section to the person they gave a gift to. <code>happy_givers</code> outputs a list of
+all the happy givers in the section. The order of the list does not matter.</p>
+
+<p>Note that if someone received but did not give a gift, they will not appear in the <code>gifts</code>
+dictionary as a key. (They'll appear only as a value.)
+You can assume that no one gives themself a gift.</p>
+
+<p>Once you've found a solution, as a challenge, attempt to implement your solution in one line
+using a list comprehension.</p>
+
+
+            <div class="monaco-storable" id="happy_givers-input" style="height:432px;"></div>
+            <a href="javascript:void" id="modal-link-happy_givers-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-happy_givers-input" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content" style="padding-bottom: -5px">
                     <iframe
-                        id="code-iframe-group_by-input"
+                        id="code-iframe-happy_givers-input"
                         width="100%"
                         height="700px"
                         style="border: none; display:block;"
@@ -337,7 +311,7 @@ return grouped</code></pre>
             </div>
             <div class="storable-status"></div>
             <script>
-                $(() => activateEditor('def group_by(s: list[int], fn) &#x2d;&gt; dict[int, list[int]]:\n    &quot;&quot;&quot;Return a dictionary of lists that together contain the elements of s.\n    The key for each list is the value that fn returns when called on any of the\n    values of that list.\n\n    &gt;&gt;&gt; group_by([12, 23, 14, 45], lambda p: p // 10)\n    {1: [12, 14], 2: [23], 4: [45]}\n    &gt;&gt;&gt; group_by(range(&#x2d;3, 4), lambda x: x * x)\n    {9: [&#x2d;3, 3], 4: [&#x2d;2, 2], 1: [&#x2d;1, 1], 0: [0]}\n    &quot;&quot;&quot;\n    grouped = {}\n    for ____ in ____:\n        key = ____\n        if key in grouped:\n            ____\n        else:\n            grouped[key] = ____\n    return grouped\n', "python", "group_by-input"));
+                $(() => activateEditor('def happy_givers(gifts):\n    &quot;&quot;&quot;\n    &gt;&gt;&gt; gift_recipients = {\n    ...     &quot;Alice&quot;: &quot;Eve&quot;, # Alice gave a gift to Eve\n    ...     &quot;Bob&quot;: &quot;Finn&quot;,\n    ...     &quot;Christina&quot;: &quot;Alice&quot;,\n    ...     &quot;David&quot;: &quot;Gina&quot;, # Gina is not a key because she didn&#x27;t give anyone a gift\n    ...     &quot;Eve&quot;: &quot;Alice&quot;,\n    ...     &quot;Finn&quot;: &quot;Bob&quot;,\n    ... }\n    &gt;&gt;&gt; list(sorted(happy_givers(gift_recipients))) # Order does not matter\n    [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Eve&#x27;, &#x27;Finn&#x27;]\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n\n\n', "python", "happy_givers-input"));
             </script>
         
 
@@ -359,7 +333,7 @@ return grouped</code></pre>
   <ul>
     <li><a href="#q1-apply-in-place">Q1: Apply in Place</a></li>
     <li><a href="#q2-shuffle">Q2: Shuffle</a></li>
-    <li><a href="#q3-group-by">Q3: Group By</a></li>
+    <li><a href="#q3-happy-givers">Q3: Happy Givers</a></li>
   </ul>
 </ul>
     </nav>
