@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/disc.css">
+
+
+    <title>
+Discussion 4 | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Discussion 4: Mutability
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="disc04.pdf" class="label label-outline">disc04.pdf</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<!-- <div class="alert storable-login-status"></div> -->
+
+
+    
+<h1 id="mutability">Mutability</h1>
+
+
+<p>Some objects in Python, such as lists and dictionaries, are <strong>mutable</strong>,
+meaning that their contents or state can be changed.
+Other objects, such as numeric types, tuples, and strings, are <strong>immutable</strong>,
+meaning they cannot be changed once they are created.</p>
+
+<p>There are many list mutation methods:</p>
+
+<ul>
+  <li><code>append(elem)</code>:
+  Add <code>elem</code> to the end of the list. Return <code>None</code>.</li>
+  <li><code>extend(s)</code>:
+  Add all elements of iterable <code>s</code> to the end of the list. Return <code>None</code>.</li>
+  <li><code>insert(i, elem)</code>:
+  Insert <code>elem</code> at index <code>i</code>. If <code>i</code> is greater than or equal to the length of
+  the list, then <code>elem</code> is inserted at the end. This does not replace any
+  existing elements, but only adds the new element <code>elem</code>. Return <code>None</code>.</li>
+  <li><code>remove(elem)</code>:
+  Remove the first occurrence of <code>elem</code> in list. Return <code>None</code>.
+  Errors if <code>elem</code> is not in the list.</li>
+  <li><code>pop(i)</code>:
+  Remove and return the element at index <code>i</code>.</li>
+  <li><code>pop()</code>:
+  Remove and return the last element.</li>
+</ul>
+
+<p>Dictionaries also have item assignment and <code>pop</code>.</p>
+
+<pre><code>&gt;&gt;&gt; d = {2: 3, 4: 16}
+&gt;&gt;&gt; d[2] = 4
+&gt;&gt;&gt; d[3] = 9
+&gt;&gt;&gt; d
+{2: 4, 4: 16, 3: 9}
+&gt;&gt;&gt; d.pop(4)
+16
+&gt;&gt;&gt; d
+{2: 4, 3: 9}</code></pre>
+
+
+<h3 id="q1-apply-in-place">Q1: Apply in Place</h3>
+
+
+<p>Implement <code>apply_in_place</code>, which takes a one-argument function <code>fn</code> and a list <code>s</code>. It modifies <code>s</code> so that each element is the result of applying <code>fn</code> to that element. It returns <code>None</code>.</p>
+
+
+            <div class="monaco-storable" id="apply_in_place-input" style="height:234px;"></div>
+            <a href="javascript:void" id="modal-link-apply_in_place-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-apply_in_place-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-apply_in_place-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def apply_in_place(fn, s):\n    &quot;&quot;&quot;Replace each element x of s with fn(x).\n\n    &gt;&gt;&gt; original_list = [5, &#x2d;1, 2, 0]\n    &gt;&gt;&gt; apply_in_place(lambda x: x * x, original_list)\n    &gt;&gt;&gt; original_list\n    [25, 1, 4, 0]\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\n', "python", "apply_in_place-input"));
+            </script>
+        
+
+
+        <button id='toggle-1' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Hint<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-1">
+One approach is to use <code>for i in range(...)</code> to iterate over the indices (positions) of <code>s</code>.
+</div>
+
+
+<h3 id="q2-shuffle">Q2: Shuffle</h3>
+
+
+<p>Define a function <code>shuffle</code> that takes a sequence with an even number of
+elements (cards) and creates a new list that interleaves the elements
+of the first half with the elements of the second half.</p>
+
+<p>To interleave two sequences <code>s0</code> and <code>s1</code> is to create a new sequence such that the new sequence contains (in this order) the first element of <code>s0</code>,  the first element of <code>s1</code>, the second element of <code>s0</code>, the second element of <code>s1</code>, and so on.</p>
+
+<blockquote><p><strong>Note:</strong>
+If you're running into an issue where the special
+heart / diamond / spades / clubs symbols are erroring in the doctests,
+feel free to copy paste the below doctests into your file
+as these don't use the special characters and should not give
+an "illegal multibyte sequence" error.</p></blockquote>
+
+
+            <div class="monaco-storable" id="shuffle-input" style="height:414px;"></div>
+            <a href="javascript:void" id="modal-link-shuffle-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-shuffle-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-shuffle-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def shuffle(s):\n    &quot;&quot;&quot;Return a shuffled list that interleaves the two halves of s.\n\n    &gt;&gt;&gt; shuffle(range(6))\n    [0, 3, 1, 4, 2, 5]\n    &gt;&gt;&gt; letters = [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;, &#x27;d&#x27;, &#x27;e&#x27;, &#x27;f&#x27;, &#x27;g&#x27;, &#x27;h&#x27;]\n    &gt;&gt;&gt; shuffle(letters)\n    [&#x27;a&#x27;, &#x27;e&#x27;, &#x27;b&#x27;, &#x27;f&#x27;, &#x27;c&#x27;, &#x27;g&#x27;, &#x27;d&#x27;, &#x27;h&#x27;]\n    &gt;&gt;&gt; shuffle(shuffle(letters))\n    [&#x27;a&#x27;, &#x27;c&#x27;, &#x27;e&#x27;, &#x27;g&#x27;, &#x27;b&#x27;, &#x27;d&#x27;, &#x27;f&#x27;, &#x27;h&#x27;]\n    &gt;&gt;&gt; letters  # Original list should not be modified\n    [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;, &#x27;d&#x27;, &#x27;e&#x27;, &#x27;f&#x27;, &#x27;g&#x27;, &#x27;h&#x27;]\n    &quot;&quot;&quot;\n    assert len(s) % 2 == 0, &#x27;len(seq) must be even&#x27;\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n', "python", "shuffle-input"));
+            </script>
+        
+
+
+<h3 id="q3-group-by">Q3: Group By</h3>
+
+<p>Write a function that takes in a list <code>s</code> and a function <code>fn</code>, and returns a dictionary that groups the elements of <code>s</code> based on the result of applying <code>fn</code>.</p>
+
+<ul>
+  <li>The dictionary should have one key for each unique result of applying <code>fn</code> to elements of <code>s</code>.</li>
+  <li>The value for each key should be a list of all elements in <code>s</code> that, when passed to <code>fn</code>, produce that key (what it evaluates to).</li>
+</ul>
+
+<p>In other words, for each element <code>e</code> in <code>s</code>, determine <code>fn(e)</code> and add <code>e</code> to the list corresponding to <code>fn(e)</code> in the dictionary.</p>
+
+<!-- 
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q group_by<button id="copy-code-python3ok-qgroup_by" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qgroup_by").onclick = () => copyCode('python3 ok -q group_by', "copy-code-python3ok-qgroup_by");
+        </script>
+        <br/>
+
+<attach-py>
+def group_by(s: list[int], fn) -> dict[int, list[int]]:
+
+<pre><code>&quot;&quot;&quot;Return a dictionary of lists that together contain the elements of s.
+The key for each list is the value that fn returns when called on any of the
+values of that list.
+
+&gt;&gt;&gt; group_by([12, 23, 14, 45], lambda p: p // 10)
+{1: [12, 14], 2: [23], 4: [45]}
+&gt;&gt;&gt; group_by(range(&#x2d;3, 4), lambda x: x * x)
+{9: [&#x2d;3, 3], 4: [&#x2d;2, 2], 1: [&#x2d;1, 1], 0: [0]}
+&quot;&quot;&quot;
+grouped = {}
+for ____ in ____:
+    key = ____
+    if key in grouped:
+        ____
+    else:
+        grouped[key] = ____
+return grouped</code></pre>
+
+</attach-py> -->
+
+
+            <div class="monaco-storable" id="group_by-input" style="height:360px;"></div>
+            <a href="javascript:void" id="modal-link-group_by-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-group_by-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-group_by-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def group_by(s: list[int], fn) &#x2d;&gt; dict[int, list[int]]:\n    &quot;&quot;&quot;Return a dictionary of lists that together contain the elements of s.\n    The key for each list is the value that fn returns when called on any of the\n    values of that list.\n\n    &gt;&gt;&gt; group_by([12, 23, 14, 45], lambda p: p // 10)\n    {1: [12, 14], 2: [23], 4: [45]}\n    &gt;&gt;&gt; group_by(range(&#x2d;3, 4), lambda x: x * x)\n    {9: [&#x2d;3, 3], 4: [&#x2d;2, 2], 1: [&#x2d;1, 1], 0: [0]}\n    &quot;&quot;&quot;\n    grouped = {}\n    for ____ in ____:\n        key = ____\n        if key in grouped:\n            ____\n        else:\n            grouped[key] = ____\n    return grouped\n', "python", "group_by-input"));
+            </script>
+        
+
+<div class="page-break"></div>
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#mutability">Mutability</a></li>
+  <ul>
+    <li><a href="#q1-apply-in-place">Q1: Apply in Place</a></li>
+    <li><a href="#q2-shuffle">Q2: Shuffle</a></li>
+    <li><a href="#q3-group-by">Q3: Group By</a></li>
+  </ul>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>
