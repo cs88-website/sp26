@@ -1,0 +1,496 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/disc.css">
+
+
+    <title>
+Discussion 5 | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Discussion 5: Abstract Data Types, Recursion
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="disc05.pdf" class="label label-outline">disc05.pdf</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<!-- <div class="alert storable-login-status"></div> -->
+
+
+    
+<h1 id="abstract-data-types">Abstract Data Types</h1>
+
+
+<p>Data abstraction is a powerful concept in computer science that allows programmers to treat code as objects — for example, car objects, chair objects, people objects, etc. That way, programmers don't have to worry about <em>how</em> code is implemented — they just have to know <em>what</em> it does.</p>
+
+<p>Data abstraction mimics how we think about the world. For example, when you want to drive a car, you don’t need to know how the engine was built or what kind of material the tires are made of. You just have to know how to turn the wheel and press the gas pedal.</p>
+
+<p>An <strong>abstract data type</strong> consists of two types of functions:</p>
+
+<ul>
+  <li><strong>Constructors</strong>: functions that build the abstract data type.</li>
+  <li><strong>Selectors</strong>: functions that retrieve information from the data type.</li>
+</ul>
+
+
+<h3 id="q1-word">Q1: Word</h3>
+
+
+<p>In this problem, we will implement two data abstractions from scratch to represent a language! Let's first
+build an abstraction for words, which will compose each language.</p>
+
+<p>The <code>word</code> abstraction stores:</p>
+
+<ol>
+  <li>a word's <code>name</code></li>
+  <li>a word's <code>definition</code> in English</li>
+</ol>
+
+<p>Your first job will be to create the <em>constructors</em> and <em>selectors</em> for the <code>word</code> type <em>in two ways</em> (denoted by <code>a</code> and <code>b</code>).</p>
+
+<ul>
+  <li>A clean, typical approach would be to use a <code>list</code> pair to bundle together attributes of our type. Can you come up with two other
+  implementations of the word ADT? Some ideas include using a dictionary or higher-order functions!</li>
+</ul>
+
+<blockquote><p><strong>Note:</strong> Concerning ourselves with the implementation of this ADT does put us <em>"beneath" the abstraction barrier</em>. However,
+a takeaway from this problem is that as we move towards higher-level functionalities (like translation), we no longer have to worry
+about the specifics of our original implementation. These low-level details are <em>abstracted away</em> by our constructors and selectors!</p></blockquote>
+
+
+            <div class="monaco-storable" id="word-input" style="height:864px;"></div>
+            <a href="javascript:void" id="modal-link-word-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-word-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-word-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('#Implementation a\ndef make_word_a(name, definition):\n    &quot;&quot;&quot;\n    &gt;&gt;&gt; yes = make_word_a(&#x27;yes&#x27;, &#x27;affirmative response&#x27;)\n    &gt;&gt;&gt; get_word_name_a(yes), get_word_definition_a(yes)\n    (&#x27;yes&#x27;, &#x27;affirmative response&#x27;)\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\ndef get_word_name_a(word):\n    "*** YOUR CODE HERE ***"\n\n\n\ndef get_word_definition_a(word):\n    "*** YOUR CODE HERE ***"\n\n\n\n#Implementation b\ndef make_word_b(name, definition):\n    &quot;&quot;&quot;\n    &gt;&gt;&gt; yes = make_word_b(&#x27;yes&#x27;, &#x27;affirmative response&#x27;)\n    &gt;&gt;&gt; get_word_name_b(yes), get_word_definition_b(yes)\n    (&#x27;yes&#x27;, &#x27;affirmative response&#x27;)\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\ndef get_word_name_b(word):\n    "*** YOUR CODE HERE ***"\n\n\n\ndef get_word_definition_b(word):\n    "*** YOUR CODE HERE ***"\n\n\n\ndef check_word_abstraction():\n    &quot;&quot;&quot;Check whether both constructors and selectors work properly.\n    &gt;&gt;&gt; yes_a = make_word_a(&#x27;yes&#x27;, &#x27;affirmative response&#x27;)\n    &gt;&gt;&gt; yes_b = make_word_b(&#x27;yes&#x27;, &#x27;affirmative response&#x27;)\n    &gt;&gt;&gt; get_word_name_a(yes_a) == get_word_name_b(yes_b)\n    True\n    &gt;&gt;&gt; get_word_definition_a(yes_a) == get_word_definition_b(yes_b)\n    True\n    &gt;&gt;&gt; # Errors (can&#x27;t mix implementations): get_word_name_a(yes_b)\n    &quot;&quot;&quot;\n', "python", "word-input"));
+            </script>
+        
+
+
+<h3 id="q2-language">Q2: Language</h3>
+
+<p>Now, implement an abstraction for language. The <code>language</code> ADT stores:</p>
+
+<ol>
+  <li>a language's <code>name</code></li>
+  <li>a list of <code>word</code>'s present in the language</li>
+</ol>
+
+<p>Finally, using both the <code>word</code> and <code>language</code> ADTs, implement the two following functions:</p>
+
+<ul>
+  <li><code>translate</code>, which takes <code>source_word</code>, a <code>word</code> abstraction, and returns the <code>name</code> of the translated word in the <code>target</code> language. If the word cannot be found, return <code>&#x27;Undefined&#x27;</code>.</li>
+  <li><code>update</code>, which updates a language's list of words with <code>new_word</code>.</li>
+</ul>
+
+<blockquote><p><strong>Hint:</strong> When we translate a word to a different language, what attribute of the word remains the same?
+From there, it's just about searching for and accessing that attribute at the right location!</p>
+
+<p><strong>Hint:</strong> With abstract data types, we can construct ("create") and select ("read") data, but we can't exactly mutate them.
+To "update" a language, we should instead construct and return a new language altogether!</p></blockquote>
+
+
+            <div class="monaco-storable" id="language-input" style="height:1368px;"></div>
+            <a href="javascript:void" id="modal-link-language-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-language-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-language-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('# Paste your word ADT here!\ndef make_word(name, definition):\n    &quot;&quot;&quot;\n    &gt;&gt;&gt; yes = make_word(&#x27;yes&#x27;, &#x27;affirmative response&#x27;)\n    &gt;&gt;&gt; get_word_name(yes), get_word_definition(yes)\n    (&#x27;yes&#x27;, &#x27;affirmative response&#x27;)\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\ndef get_word_name(word):\n    "*** YOUR CODE HERE ***"\n\n\n\ndef get_word_definition(word):\n    "*** YOUR CODE HERE ***"\n\n\n\n# Implement the language ADT here!\ndef make_language(name, words):\n    &quot;&quot;&quot;\n    &gt;&gt;&gt; hi, there = make_word(&#x27;hi&#x27;, &#x27;friendly greeting&#x27;), make_word(&#x27;there&#x27;, &#x27;at that place&#x27;)\n    &gt;&gt;&gt; english = make_language(&#x27;english&#x27;, [hi, there])\n    &gt;&gt;&gt; get_language_name(english)\n    &#x27;english&#x27;\n    &gt;&gt;&gt; for w in get_language_words(english):\n    ...     print(get_word_name(w))\n    ...\n    hi\n    there\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\ndef get_language_name(language):\n    "*** YOUR CODE HERE ***"\n\n\n\ndef get_language_words(language):\n    "*** YOUR CODE HERE ***"\n\n\n\ndef translate(source_word, target):\n    &quot;&quot;&quot;Given a word, translate it into the &#x27;target&#x27; language.\n\n    &gt;&gt;&gt; hi_def, there_def = &#x27;friendly greeting&#x27;, &#x27;at that place&#x27;\n    &gt;&gt;&gt; hi, there = make_word(&#x27;hi&#x27;, hi_def), make_word(&#x27;there&#x27;, there_def)\n    &gt;&gt;&gt; hiss = make_word(&#x27;hiss&#x27;, hi_def)\n    &gt;&gt;&gt; english, parseltongue = make_language(&#x27;english&#x27;, [hi, there]), make_language(&#x27;parseltongue&#x27;, [hiss])\n    &gt;&gt;&gt; translate(hi, parseltongue)\n    &#x27;hiss&#x27;\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n    return &#x27;Undefined&#x27;\n\ndef update(language, new_word):\n    &quot;&quot;&quot;Update the input `language` by adding &#x27;new_word&#x27; to its words.\n\n    &gt;&gt;&gt; hi, there = make_word(&#x27;hi&#x27;, &#x27;friendly greeting&#x27;), make_word(&#x27;there&#x27;, &#x27;at that place&#x27;)\n    &gt;&gt;&gt; english = make_language(&#x27;english&#x27;, [hi, there])\n    &gt;&gt;&gt; english = update(english, make_word(&#x27;yes&#x27;, &#x27;used for affirmation&#x27;))\n    &gt;&gt;&gt; for w in get_language_words(english):\n    ...     print(get_word_name(w))\n    ...\n    hi\n    there\n    yes\n    &quot;&quot;&quot;\n    return ________________________________________________________\n\n', "python", "language-input"));
+            </script>
+        
+
+<div class="page-break"></div>
+
+
+<h1 id="recursion">Recursion</h1>
+
+
+<p>Recursion is when a function calls itself to solve a smaller version of the same problem. Instead of tackling a complex task all at once, recursion breaks it down into simpler steps until it reaches a <strong>base case</strong>.</p>
+
+<p>Many students find this topic challenging. Everything gets easier with practice. Please help each other learn.</p>
+
+
+<h3 id="q3-swipe">Q3: Swipe</h3>
+
+
+<p>Implement <code>swipe</code>, which prints the digits of argument <code>n</code>, one per line, <strong>first backward then forward</strong>. The left-most digit is printed only once. <strong>Do not use</strong> <code>while</code> or <code>for</code> or <code>str</code>. (Use recursion, of course!)</p>
+
+
+            <div class="monaco-storable" id="swipe-input" style="height:360px;"></div>
+            <a href="javascript:void" id="modal-link-swipe-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-swipe-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-swipe-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def swipe(n):\n    &quot;&quot;&quot;Print the digits of n, one per line, first backward then forward.\n\n    &gt;&gt;&gt; swipe(2837)\n    7\n    3\n    8\n    2\n    8\n    3\n    7\n    &quot;&quot;&quot;\n    if n &lt; 10:\n        print(n)\n    else:\n        "*** YOUR CODE HERE ***"\n\n\n\n', "python", "swipe-input"));
+            </script>
+        
+
+
+
+<div class="page-break"></div>
+
+
+<h3 id="q4-skip-factorial">Q4: Skip Factorial</h3>
+
+
+<p>Define the base case for the <code>skip_factorial</code> function, which returns the product of <strong>every other positive</strong> integer, starting with <code>n</code>.</p>
+
+
+            <div class="monaco-storable" id="skip_factorial-input" style="height:270px;"></div>
+            <a href="javascript:void" id="modal-link-skip_factorial-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-skip_factorial-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-skip_factorial-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def skip_factorial(n):\n    &quot;&quot;&quot;Return the product of positive integers n * (n &#x2d; 2) * (n &#x2d; 4) * ...\n\n    &gt;&gt;&gt; skip_factorial(5) # 5 * 3 * 1\n    15\n    &gt;&gt;&gt; skip_factorial(8) # 8 * 6 * 4 * 2\n    384\n    &quot;&quot;&quot;\n    if ___:\n        return ___\n    else:\n        return ___\n\n', "python", "skip_factorial-input"));
+            </script>
+        
+
+
+
+<div class="page-break"></div>
+
+
+<h3 id="q5-recursive-hailstone">Q5: Recursive Hailstone</h3>
+
+
+<p>Recall the <code>hailstone</code> function from <a href="/sp26/hw/hw02/">Homework 2</a>.
+First, pick a positive integer <code>n</code> as the start. If <code>n</code> is even, divide it by 2.
+If <code>n</code> is odd, multiply it by 3 and add 1. Repeat this process until <code>n</code> is 1.
+Complete this recursive version of <code>hailstone</code> that prints out the values of the
+sequence and returns the number of steps.</p>
+
+
+            <div class="monaco-storable" id="recursive-hailstone-input" style="height:630px;"></div>
+            <a href="javascript:void" id="modal-link-recursive-hailstone-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-recursive-hailstone-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-recursive-hailstone-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def hailstone(n):\n    &quot;&quot;&quot;Print out the hailstone sequence starting at n, \n    and return the number of elements in the sequence.\n    &gt;&gt;&gt; a = hailstone(10)\n    10\n    5\n    16\n    8\n    4\n    2\n    1\n    &gt;&gt;&gt; a\n    7\n    &gt;&gt;&gt; b = hailstone(1)\n    1\n    &gt;&gt;&gt; b\n    1\n    &quot;&quot;&quot;\n    print(n)\n    if n % 2 == 0:\n        return even(n)\n    else:\n        return odd(n)\n\ndef even(n):\n    return ____\n\ndef odd(n):\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n', "python", "recursive-hailstone-input"));
+            </script>
+        
+
+</p>
+
+<div class="page-break"></div>
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#abstract-data-types">Abstract Data Types</a></li>
+  <ul>
+    <li><a href="#q1-word">Q1: Word</a></li>
+    <li><a href="#q2-language">Q2: Language</a></li>
+  </ul>
+  <li><a href="#recursion">Recursion</a></li>
+  <ul>
+    <li><a href="#q3-swipe">Q3: Swipe</a></li>
+    <li><a href="#q4-skip-factorial">Q4: Skip Factorial</a></li>
+    <li><a href="#q5-recursive-hailstone">Q5: Recursive Hailstone</a></li>
+  </ul>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>
