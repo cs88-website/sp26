@@ -1,0 +1,445 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/lab.css">
+
+
+    <title>
+Lab 4 Solutions | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Lab 4 Solutions
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="lab04.zip" class="label label-outline">lab04.zip</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+<h2>Solution Files</h2>
+
+
+    
+<h1 id="required-questions">Required Questions</h1>
+
+
+
+<h2 id="coding-practice">Coding Practice</h2>
+
+
+
+<h3 id="q1-over-9000">Q1: Over 9000</h3>
+
+
+<p>Define <code>over_nine_thousand</code>, which takes a list and modifies that list by
+adding 9000 to each element.</p>
+
+<solution>
+
+<pre><code>def over_nine_thousand(original_list):
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; original_list = [1, 2, 3, 4, 5]
+    &gt;&gt;&gt; over_nine_thousand(original_list)
+    &gt;&gt;&gt; original_list
+    [9001, 9002, 9003, 9004, 9005]
+    &quot;&quot;&quot;
+<div class="sol-highlight">    index = 0
+    while index &lt; len(original_list):
+        original_list[index] += 9000
+        index += 1
+
+# Alternate solution using map
+def over_nine_thousand(original_list):
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; original_list = [1, 2, 3, 4, 5]
+    &gt;&gt;&gt; over_nine_thousand(original_list)
+    &gt;&gt;&gt; original_list
+    [9001, 9002, 9003, 9004, 9005]
+    &quot;&quot;&quot;
+    original_list[:] = map(lambda x: x + 9000, original_list)</div></code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q over_nine_thousand<button id="copy-code-python3ok-qover_nine_thousand" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qover_nine_thousand").onclick = () => copyCode('python3 ok -q over_nine_thousand', "copy-code-python3ok-qover_nine_thousand");
+        </script>
+        <br/>
+
+
+<h3 id="q2-group-by">Q2: Group By</h3>
+
+<p>Write a function that takes in a list <code>s</code> and a function <code>fn</code>, and returns a dictionary that groups the elements of <code>s</code> based on the result of applying <code>fn</code>.</p>
+
+<ul>
+  <li>The dictionary should have one key for each unique result of applying <code>fn</code> to elements of <code>s</code>.</li>
+  <li>The value for each key should be a list of all elements in <code>s</code> that, when passed to <code>fn</code>, produce that key (what it evaluates to).</li>
+</ul>
+
+<p>In other words, for each element <code>e</code> in <code>s</code>, determine <code>fn(e)</code> and add <code>e</code> to the list corresponding to <code>fn(e)</code> in the dictionary.</p>
+
+<solution>
+
+<pre><code>def group_by(s: list[int], fn) &#x2d;&gt; dict[int, list[int]]:
+    &quot;&quot;&quot;Return a dictionary of lists that together contain the elements of s.
+    The key for each list is the value that fn returns when called on any of the
+    values of that list.
+
+    &gt;&gt;&gt; group_by([12, 23, 14, 45], lambda p: p // 10)
+    {1: [12, 14], 2: [23], 4: [45]}
+    &gt;&gt;&gt; group_by(range(&#x2d;3, 4), lambda x: x * x)
+    {9: [&#x2d;3, 3], 4: [&#x2d;2, 2], 1: [&#x2d;1, 1], 0: [0]}
+    &quot;&quot;&quot;
+    grouped = {}
+<div class="sol-highlight">    for x in s:</div><div class="sol-highlight">        key = fn(x)</div>        if key in grouped:
+<div class="sol-highlight">            grouped[key].append(x)</div>        else:
+<div class="sol-highlight">            grouped[key] = [x]</div>    return grouped</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q group_by<button id="copy-code-python3ok-qgroup_by" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qgroup_by").onclick = () => copyCode('python3 ok -q group_by', "copy-code-python3ok-qgroup_by");
+        </script>
+        <br/>
+
+<!-- <code-input group_by lang:python>
+
+<pre><code>def group_by(s: list[int], fn) &#x2d;&gt; dict[int, list[int]]:
+    &quot;&quot;&quot;Return a dictionary of lists that together contain the elements of s.
+    The key for each list is the value that fn returns when called on any of the
+    values of that list.
+
+    &gt;&gt;&gt; group_by([12, 23, 14, 45], lambda p: p // 10)
+    {1: [12, 14], 2: [23], 4: [45]}
+    &gt;&gt;&gt; group_by(range(&#x2d;3, 4), lambda x: x * x)
+    {9: [&#x2d;3, 3], 4: [&#x2d;2, 2], 1: [&#x2d;1, 1], 0: [0]}
+    &quot;&quot;&quot;
+    grouped = {}
+<div class="sol-highlight">    for x in s:</div><div class="sol-highlight">        key = fn(x)</div>        if key in grouped:
+<div class="sol-highlight">            grouped[key].append(x)</div>        else:
+<div class="sol-highlight">            grouped[key] = [x]</div>    return grouped</code></pre>
+
+</code-input> -->
+
+
+<h3 id="q3-common-players">Q3: Common Players</h3>
+
+
+<p>Implement the function <code>common_players</code>. The <code>common_players</code> function takes in a <code>roster</code> dictionary that
+maps players to their teams, and returns a new dictionary that maps teams to a list of players on that team.
+The order of player names in the list does not matter.</p>
+
+<solution>
+
+<pre><code>def common_players(roster):
+    &quot;&quot;&quot;Returns a dictionary containing values along with a corresponding
+    list of keys that had that value from the original dictionary.
+    &gt;&gt;&gt; full_roster = {
+    ...     &quot;bob&quot;: &quot;Team A&quot;,
+    ...     &quot;barnum&quot;: &quot;Team B&quot;,
+    ...     &quot;beatrice&quot;: &quot;Team C&quot;,
+    ...     &quot;bernice&quot;: &quot;Team B&quot;,
+    ...     &quot;ben&quot;: &quot;Team D&quot;,
+    ...     &quot;belle&quot;: &quot;Team A&quot;,
+    ...     &quot;bill&quot;: &quot;Team B&quot;,
+    ...     &quot;bernie&quot;: &quot;Team B&quot;,
+    ...     &quot;baxter&quot;: &quot;Team A&quot;
+    ... }
+    &gt;&gt;&gt; player_dict = common_players(full_roster)
+    &gt;&gt;&gt; type(player_dict) == dict
+    True
+    &gt;&gt;&gt; for key, val in sorted(player_dict.items()):
+    ...     print(key, list(sorted(val)))
+    Team A [&#x27;baxter&#x27;, &#x27;belle&#x27;, &#x27;bob&#x27;]
+    Team B [&#x27;barnum&#x27;, &#x27;bernice&#x27;, &#x27;bernie&#x27;, &#x27;bill&#x27;]
+    Team C [&#x27;beatrice&#x27;]
+    Team D [&#x27;ben&#x27;]
+    &quot;&quot;&quot;
+<div class="sol-highlight">    result_dict = {}
+    for player in roster:
+        team = roster[player]
+        if team in result_dict:
+            result_dict[team] += [player]
+        else:
+            result_dict[team] = [player]
+    return result_dict</div></code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q common_players<button id="copy-code-python3ok-qcommon_players" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qcommon_players").onclick = () => copyCode('python3 ok -q common_players', "copy-code-python3ok-qcommon_players");
+        </script>
+        <br/>
+
+
+<h2 id="check-your-score-locally">Check Your Score Locally</h2>
+
+<p>You can locally check your score on each question of this assignment by running</p>
+
+<pre><code>python3 ok &#x2d;&#x2d;score</code></pre>
+
+<p><strong>This does NOT submit the assignment!</strong> When you are satisfied with your score, submit the assignment to Gradescope to receive credit for it.</p>
+
+
+<h1 id="submit-assignment">Submit Assignment</h1>
+
+
+<p>Submit this assignment by uploading any files you've edited <strong>to the appropriate Gradescope assignment.</strong> <a href="/sp26/lab/lab00/#submit-with-gradescope">Lab 00</a> has detailed instructions.</p>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#required-questions">Required Questions</a></li>
+  <ul>
+    <li><a href="#coding-practice">Coding Practice</a></li>
+    <ul>
+      <li><a href="#q1-over-9000">Q1: Over 9000</a></li>
+      <li><a href="#q2-group-by">Q2: Group By</a></li>
+      <li><a href="#q3-common-players">Q3: Common Players</a></li>
+    </ul>
+    <li><a href="#check-your-score-locally">Check Your Score Locally</a></li>
+  </ul>
+  <li><a href="#submit-assignment">Submit Assignment</a></li>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>
