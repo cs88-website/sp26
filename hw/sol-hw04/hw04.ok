@@ -1,0 +1,26 @@
+{
+    "name": "Homework 4",
+    "endpoint": "cal/cs88/sp26/hw04",
+    "src": [
+        "hw04.py"
+    ],
+    "tests": {
+        "hw*.py": "doctest",
+        "tests/*.py": "ok_test"
+    },
+    "default_tests": [
+        "smooth",
+        "n_fold_smooth",
+        "trade",
+        "filter"
+    ],
+    "protocols": [
+        "restore",
+        "file_contents",
+        "analytics",
+        "help",
+        "unlock",
+        "grading",
+        "backup"
+    ]
+}
