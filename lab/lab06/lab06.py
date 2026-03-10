@@ -1,3 +1,18 @@
+def partition(n):
+    """Return the number of partitions of positive integer n.
+
+    >>> partition(5)
+    7
+    >>> partition(10)
+    42
+    >>> partition(15)
+    176
+    >>> partition(20)
+    627
+    """
+    "*** YOUR CODE HERE ***"
+
+
 def merge_numbers(n1, n2):
     """Merges two numbers that have decreasing digits.
 
@@ -46,19 +61,4 @@ def non_decrease_subseqs(s):
             b = ______________________
             return insert_into_all(________, ______________) + ________________
     return subseq_helper(____, ____)
-
-
-def partition(n):
-    """Return the number of partitions of positive integer n.
-
-    >>> partition(5)
-    7
-    >>> partition(10)
-    42
-    >>> partition(15)
-    176
-    >>> partition(20)
-    627
-    """
-    "*** YOUR CODE HERE ***"
 
