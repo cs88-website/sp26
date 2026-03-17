@@ -48,6 +48,13 @@ type(my_house)
 # _name is just a *convention* to communicate something internal.
 # __name makes the name 'private' to this class, which means it can't be easily accessed.
 
+class BadAccount:
+    def __init__(self, name, initial_deposit=0):
+        name = name
+        # Alternatively, we could have used _balance to indicate that this is an internal variable.
+        # _balance = initial_deposit
+        balance = initial_deposit
+
 class BaseAccount:
     def __init__(self, name, initial_deposit=0):
         self.name = name

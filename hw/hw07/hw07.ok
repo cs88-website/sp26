@@ -1,0 +1,28 @@
+{
+    "name": "Homework 7",
+    "endpoint": "cal/cs88/sp26/hw07",
+    "src": [
+        "hw07.py"
+    ],
+    "tests": {
+        "hw*.py": "doctest",
+        "tests/*.py": "ok_test"
+    },
+    "default_tests": [
+        "Player",
+        "Game",
+        "AggressivePlayer",
+        "CautiousPlayer",
+        "Account",
+        "FreeChecking"
+    ],
+    "protocols": [
+        "restore",
+        "file_contents",
+        "help",
+        "grading",
+        "analytics",
+        "unlock",
+        "backup"
+    ]
+}
