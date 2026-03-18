@@ -173,103 +173,7 @@ have. First, describe the type of each attribute and how it will be used, then
 try to implement the class's methods in terms of those attributes.</p>
 
 
-<h3 id="q1-smart-fridge">Q1: Smart Fridge</h3>
-
-
-<p>The <code>SmartFridge</code> class is used by smart
-refrigerators to track which items are in the fridge
-and let owners know when an item has run out.</p>
-
-<p>The class internally uses a dictionary to store items,
-where each key is the item name and the value is the current quantity.
-The <code>add_item</code> method should add the given quantity
-of the given item and report the current quantity.
-You can assume that the <code>use_item</code> method will only be called on
-items that are already in the fridge, and it should use up
-the given quantity of the given item. If the quantity would fall to or below zero, it should only use <em>up to</em> the remaining quantity, and remind the owner to buy more of that item.</p>
-
-<p>Finish implementing the <code>SmartFridge</code> class definition
-so that its <code>add_item</code> and <code>use_item</code> methods work as specified by the doctests.</p>
-
-<blockquote><p>You may find Python's formatted string literals, or <a href="https://docs.python.org/3/tutorial/inputoutput.html#fancier-output-formatting">f-strings</a> useful.
-A quick example:</p>
-
-<pre><code>&gt;&gt;&gt; feeling = &#x27;love&#x27;
-&gt;&gt;&gt; course = &#x27;61A!&#x27;
-&gt;&gt;&gt; f&#x27;I {feeling} {course}&#x27;
-&#x27;I love 61A!&#x27;</code></pre>
-
-<p>If you're curious about alternate methods of string formatting, you can also check out an older method of <a href="https://docs.python.org/2/library/stdtypes.html#str.format">Python string formatting</a>.
-A quick example:</p>
-
-<pre><code>&gt;&gt;&gt; ten, twenty, thirty = 10, &#x27;twenty&#x27;, [30]
-&gt;&gt;&gt; &#x27;{0} plus {1} is {2}&#x27;.format(ten, twenty, thirty)
-&#x27;10 plus twenty is [30]&#x27;</code></pre></blockquote>
-
-
-            
-            <b>Your Answer</b>
-            
-            <div class="monaco-storable" id="smartfridge-input" style="height:630px;"></div>
-            <a href="javascript:void" id="modal-link-smartfridge-input">Run in 61A Code</a>
-            <div class="modal fade" id="modal-smartfridge-input" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content" style="padding-bottom: -5px">
-                    <iframe
-                        id="code-iframe-smartfridge-input"
-                        width="100%"
-                        height="700px"
-                        style="border: none; display:block;"
-                    ></iframe>
-                    </div>
-                </div>
-            </div>
-            <div class="storable-status"></div>
-            <script>
-                $(() => activateEditor('class SmartFridge:\n    &quot;&quot;&quot;&quot;\n    &gt;&gt;&gt; fridgey = SmartFridge()\n    &gt;&gt;&gt; fridgey.add_item(&#x27;Mayo&#x27;, 1)\n    &#x27;I now have 1 Mayo&#x27;\n    &gt;&gt;&gt; fridgey.add_item(&#x27;Mayo&#x27;, 2)\n    &#x27;I now have 3 Mayo&#x27;\n    &gt;&gt;&gt; fridgey.use_item(&#x27;Mayo&#x27;, 2.5)\n    &#x27;I have 0.5 Mayo left&#x27;\n    &gt;&gt;&gt; fridgey.use_item(&#x27;Mayo&#x27;, 0.5)\n    &#x27;Oh no, we need more Mayo!&#x27;\n    &gt;&gt;&gt; fridgey.add_item(&#x27;Eggs&#x27;, 12)\n    &#x27;I now have 12 Eggs&#x27;\n    &gt;&gt;&gt; fridgey.use_item(&#x27;Eggs&#x27;, 15)\n    &#x27;Oh no, we need more Eggs!&#x27;\n    &gt;&gt;&gt; fridgey.add_item(&#x27;Eggs&#x27;, 1)\n    &#x27;I now have 1 Eggs&#x27;\n    &quot;&quot;&quot;\n    def __init__(self):\n        self.items = {}\n    def add_item(self, item, quantity):\n        "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n    def use_item(self, item, quantity):\n        "*** YOUR CODE HERE ***"\n\n\n\n\n\n', "python", "smartfridge-input"));
-            </script>
-        
-            <div class="sol-highlight">
-                <b>Solution</b>
-                
-<pre><code>class SmartFridge:
-    &quot;&quot;&quot;&quot;
-    &gt;&gt;&gt; fridgey = SmartFridge()
-    &gt;&gt;&gt; fridgey.add_item(&#x27;Mayo&#x27;, 1)
-    &#x27;I now have 1 Mayo&#x27;
-    &gt;&gt;&gt; fridgey.add_item(&#x27;Mayo&#x27;, 2)
-    &#x27;I now have 3 Mayo&#x27;
-    &gt;&gt;&gt; fridgey.use_item(&#x27;Mayo&#x27;, 2.5)
-    &#x27;I have 0.5 Mayo left&#x27;
-    &gt;&gt;&gt; fridgey.use_item(&#x27;Mayo&#x27;, 0.5)
-    &#x27;Oh no, we need more Mayo!&#x27;
-    &gt;&gt;&gt; fridgey.add_item(&#x27;Eggs&#x27;, 12)
-    &#x27;I now have 12 Eggs&#x27;
-    &gt;&gt;&gt; fridgey.use_item(&#x27;Eggs&#x27;, 15)
-    &#x27;Oh no, we need more Eggs!&#x27;
-    &gt;&gt;&gt; fridgey.add_item(&#x27;Eggs&#x27;, 1)
-    &#x27;I now have 1 Eggs&#x27;
-    &quot;&quot;&quot;
-    def __init__(self):
-        self.items = {}
-    def add_item(self, item, quantity):
-        if item in self.items:
-            self.items[item] += quantity
-        else:
-            self.items[item] = quantity
-        return f&#x27;I now have {self.items[item]} {item}&#x27;
-    def use_item(self, item, quantity):
-        self.items[item] &#x2d;= min(quantity, self.items[item])
-        if self.items[item] == 0:
-            return f&#x27;Oh no, we need more {item}!&#x27;
-        return f&#x27;I have {self.items[item]} {item} left&#x27;
-</code></pre>
-
-            </div>
-        
-
-
-<h3 id="q2-keyboard">Q2: Keyboard</h3>
+<h3 id="q1-keyboard">Q1: Keyboard</h3>
 
 
 <p><strong>Overview:</strong> A keyboard has a button for every letter of the alphabet. When a
@@ -524,8 +428,7 @@ One short sentence is enough to describe how new letters are added to <code>type
       <ul>
   <li><a href="#object-oriented-programming">Object-Oriented Programming</a></li>
   <ul>
-    <li><a href="#q1-smart-fridge">Q1: Smart Fridge</a></li>
-    <li><a href="#q2-keyboard">Q2: Keyboard</a></li>
+    <li><a href="#q1-keyboard">Q1: Keyboard</a></li>
   </ul>
 </ul>
     </nav>
