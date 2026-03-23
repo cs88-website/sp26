@@ -1,0 +1,30 @@
+DIRECTIONS:
+For each of these two questions, please write **two to three** sentences as an answer.
+You may **not** use an LLM to write these answers, but there is also not a single correct answer.
+Each partner should answer questions independently, but it is OK if your answers are similar.
+
+Partner 1: **INSERT FULL NAME**
+
+Question 1 (1 point):
+What aspect of implementing the Ants project did you find the most challenging? (e.g. Was it a particular Ant, the size of the project, etc.)
+
+[Write your responses here]
+
+Question 2 (1 point):
+This project has you extending an existing codebase rather than writing from scratch. What was different (harder or easier) about reading and modifying someone else's code compared to writing your own?
+
+[Write your responses here]
+
+
+
+Partner 2: **INSERT FULL NAME**
+
+Question 1 (1 point):
+What aspect of implementing the Ants project did you find the most challenging? (e.g. Was it a particular Ant, the size of the project, etc.)
+
+[Write your responses here]
+
+Question 2 (1 point):
+This project has you extending an existing codebase rather than writing from scratch. What was different (harder or easier) about reading and modifying someone else's code compared to writing your own?
+
+[Write your responses here]
