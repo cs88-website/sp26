@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+    
+    <link rel="stylesheet" href="/sp26/assets/css/lab.css">
+
+
+    <title>
+Lab 8: Linked Lists | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Lab 8: Linked Lists
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="lab08.zip" class="label label-outline">lab08.zip</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<p><i>Due by 11:59pm on Friday, April 3.</i></p>
+
+
+
+
+
+
+<h2 id='starter-files'>Starter Files</h2>
+
+<p>Download <a href="lab08.zip">lab08.zip</a>.</p>
+
+
+
+
+
+
+
+
+    
+<h1 id="optional-wwpd-for-inheritance-practice">Optional WWPD For Inheritance Practice</h1>
+
+
+
+<h3 id="q1-what-would-python-print">Q1: What would Python print?</h3>
+
+
+<p>Predict the result of evaluating the following calls in the
+interpreter. Then try them out yourself!</p>
+
+<pre><code>&gt;&gt;&gt; class Account:
+...     interest = 0.02
+...     def __init__(self, account_holder):
+...         self.balance = 0
+...         self.holder = account_holder
+...     def deposit(self, amount):
+...         self.balance = self.balance + amount
+...         print(&quot;Yes!&quot;)
+...
+&gt;&gt;&gt; class CheckingAccount(Account):
+...     def __init__(self, account_holder):
+...         Account.__init__(self, account_holder)
+...     def deposit(self, amount):
+...         Account.deposit(self, amount)
+...         print(&quot;Have a nice day!&quot;)
+...
+&gt;&gt;&gt; a = Account(&quot;Billy&quot;)
+&gt;&gt;&gt; a.balance
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x30;</div>
+&gt;&gt;&gt; c = CheckingAccount(&quot;Eric&quot;)
+&gt;&gt;&gt; c.balance
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x30;</div>
+&gt;&gt;&gt; a.deposit(30)
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x59;&#x65;&#x73;&#x21;</div>
+&gt;&gt;&gt; c.deposit(30)
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x59;&#x65;&#x73;&#x21;&#xa;&#x48;&#x61;&#x76;&#x65;&#x20;&#x61;&#x20;&#x6e;&#x69;&#x63;&#x65;&#x20;&#x64;&#x61;&#x79;&#x21;</div>
+&gt;&gt;&gt; c.interest
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x30;&#x2e;&#x30;&#x32;</div></code></pre>
+        <button id='prompt-1' class='btn btn-outline btn-lg solutiontoggle prompt'>
+        Toggle Solution<noscript> (enable JavaScript)</noscript>
+        </button>
+        
+
+
+<h1 id="required-questions">Required Questions</h1>
+
+
+
+<h2 id="inheritance-and-linked-lists">Inheritance and Linked Lists</h2>
+
+
+<p>Consult the drop-down if you need a refresher on Linked Lists. It's
+okay to skip directly to the questions and refer back
+here should you get stuck.</p>
+
+
+        <button id='toggle-1' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Linked Lists<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-1">
+
+<p>A linked list is a data structure for storing a sequence of values. It is more
+efficient than a regular built-in list for certain operations, such as inserting
+a value in the middle of a long list. Linked lists are not built in, and so we
+define a class called <code>Link</code> to represent them. 
+A linked list is either a <code>Link</code> instance or <code>Link.empty</code> 
+(which represents an empty linked list).</p>
+
+<p>A instance of <code>Link</code> has two instance attributes, <code>first</code> and <code>rest</code>.</p>
+
+<p>The <code>rest</code> attribute of a <code>Link</code> instance should always be a linked list: either
+another <code>Link</code> instance or <code>Link.empty</code>. It SHOULD NEVER be <code>None</code>.</p>
+
+<p>To check if a linked list is empty, compare it to <code>Link.empty</code>. Since there is only
+ever one empty list, we can use <code>is</code> to compare, but <code>==</code> would work too.</p>
+
+<pre><code>def is_empty(s):
+    &quot;&quot;&quot;Return whether linked list s is empty.&quot;&quot;&quot;
+    return s is Link.empty:</code></pre>
+
+<p>You can mutate a <code>Link</code> object <code>s</code> in two ways:</p>
+
+<ul>
+  <li>Change the first element with <code>s.first = ...</code></li>
+  <li>Change the rest of the elements with <code>s.rest = ...</code></li>
+</ul>
+
+<p>You can make a new <code>Link</code> object by calling <code>Link</code>:</p>
+
+<ul>
+  <li><code>Link(4)</code> makes a linked list of length 1 containing 4.</li>
+  <li><code>Link(4, s)</code> makes a linked list that starts with 4 followed by the elements of linked list <code>s</code>.</li>
+</ul>
+
+</div>
+
+
+<h3 id="q2-mint">Q2: Mint</h3>
+
+
+<p>A mint is a place where coins are made. In this question, you'll implement a <code>Mint</code> class that can output a <code>Coin</code> with the correct year and worth.</p>
+
+<ul>
+  <li>Each <code>Mint</code> instance has a <code>year</code> stamp. The <code>update</code> method sets the
+  <code>year</code> stamp of the instance to the <code>present_year</code> class attribute of the <code>Mint</code> <em>class</em>.</li>
+  <li>The <code>create</code> method takes a subclass of <code>Coin</code> (<em>not</em> an instance!), then
+  creates and returns an instance of that subclass stamped with the <code>Mint</code>'s year (which may be different from
+  <code>Mint.present_year</code> if it has not been updated.)</li>
+  <li>A <code>Coin</code>'s <code>worth</code> method returns the <code>cents</code> value of the coin plus one
+  extra cent for each year of age beyond 50. A coin's age can be determined
+  by subtracting the coin's year from the <code>present_year</code> class attribute of
+  the <code>Mint</code> class.</li>
+</ul>
+
+<solution>
+
+<pre><code>class Mint:
+    &quot;&quot;&quot;A mint creates coins by stamping on years.
+
+    The update method sets the mint&#x27;s stamp to Mint.present_year.
+
+    &gt;&gt;&gt; mint = Mint()
+    &gt;&gt;&gt; mint.year
+    2025
+    &gt;&gt;&gt; dime = mint.create(Dime)
+    &gt;&gt;&gt; dime.year
+    2025
+    &gt;&gt;&gt; Mint.present_year = 2105  # Time passes
+    &gt;&gt;&gt; nickel = mint.create(Nickel)
+    &gt;&gt;&gt; nickel.year     # The mint has not updated its stamp yet
+    2025
+    &gt;&gt;&gt; nickel.worth()  # 5 cents + (80 &#x2d; 50 years)
+    35
+    &gt;&gt;&gt; mint.update()   # The mint&#x27;s year is updated to 2105
+    &gt;&gt;&gt; Mint.present_year = 2180     # More time passes
+    &gt;&gt;&gt; mint.create(Dime).worth()    # 10 cents + (75 &#x2d; 50 years)
+    35
+    &gt;&gt;&gt; Mint().create(Dime).worth()  # A new mint has the current year
+    10
+    &gt;&gt;&gt; dime.worth()     # 10 cents + (155 &#x2d; 50 years)
+    115
+    &gt;&gt;&gt; Dime.cents = 20  # Upgrade all dimes!
+    &gt;&gt;&gt; dime.worth()     # 20 cents + (155 &#x2d; 50 years)
+    125
+    &quot;&quot;&quot;
+    present_year = 2025
+
+    def __init__(self):
+        self.update()
+
+    def create(self, coin):
+        "*** YOUR CODE HERE ***"
+
+    def update(self) &#x2d;&gt; None:
+        "*** YOUR CODE HERE ***"
+
+class Coin:
+    cents = None # will be provided by subclasses, but not by Coin itself
+
+    def __init__(self, year: int):
+        self.year = year
+
+    def worth(self) &#x2d;&gt; int:
+        "*** YOUR CODE HERE ***"
+
+class Nickel(Coin):
+    cents = 5
+
+class Dime(Coin):
+    cents = 10</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q Mint<button id="copy-code-python3ok-qMint" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qMint").onclick = () => copyCode('python3 ok -q Mint', "copy-code-python3ok-qMint");
+        </script>
+        <br/>
+
+
+<h3 id="q3-sum-nums">Q3: Sum Nums</h3>
+
+
+<p>Write a function <code>sum_nums</code> that receives a linked list <code>s</code> and returns the sum of its elements. You may assume the elements of <code>s</code> are all integers. Try to implement <code>sum_nums</code> with recursion!</p>
+
+<solution>
+
+<pre><code>def sum_nums(s):
+    &quot;&quot;&quot;
+    Returns the sum of the elements in s.
+
+    &gt;&gt;&gt; a = Link(1, Link(6, Link(7)))
+    &gt;&gt;&gt; sum_nums(a)
+    14
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q sum_nums<button id="copy-code-python3ok-qsum_nums" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qsum_nums").onclick = () => copyCode('python3 ok -q sum_nums', "copy-code-python3ok-qsum_nums");
+        </script>
+        <br/>
+
+
+<h3 id="q4-list-to-link">Q4: List to Link</h3>
+
+
+<p>Write a function <code>list_to_link</code> that takes in a Python list and returns the
+linked list version of the sequence.</p>
+
+<p>Try to find both an iterative and recursive solution for this problem!</p>
+
+<solution>
+
+<pre><code>def list_to_link(lst):
+    &quot;&quot;&quot;Takes a Python list and returns a linked list with the same elements.
+
+    &gt;&gt;&gt; link = list_to_link([1, 2, 3])
+    &gt;&gt;&gt; print(link)
+    (1 2 3)
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+</solution>
+
+
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q list_to_link<button id="copy-code-python3ok-qlist_to_link" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qlist_to_link").onclick = () => copyCode('python3 ok -q list_to_link', "copy-code-python3ok-qlist_to_link");
+        </script>
+        <br/>
+
+
+<h2 id="check-your-score-locally">Check Your Score Locally</h2>
+
+<p>You can locally check your score on each question of this assignment by running</p>
+
+<pre><code>python3 ok &#x2d;&#x2d;score</code></pre>
+
+<p><strong>This does NOT submit the assignment!</strong> When you are satisfied with your score, submit the assignment to Gradescope to receive credit for it.</p>
+
+
+<h1 id="submit-assignment">Submit Assignment</h1>
+
+
+<p>Submit this assignment by uploading any files you've edited <strong>to the appropriate Gradescope assignment.</strong> <a href="/sp26/lab/lab00/#submit-with-gradescope">Lab 00</a> has detailed instructions.</p>
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#optional-wwpd-for-inheritance-practice">Optional WWPD For Inheritance Practice</a></li>
+  <ul>
+    <li><a href="#q1-what-would-python-print">Q1: What would Python print?</a></li>
+  </ul>
+  <li><a href="#required-questions">Required Questions</a></li>
+  <ul>
+    <li><a href="#inheritance-and-linked-lists">Inheritance and Linked Lists</a></li>
+    <ul>
+      <li><a href="#q2-mint">Q2: Mint</a></li>
+      <li><a href="#q3-sum-nums">Q3: Sum Nums</a></li>
+      <li><a href="#q4-list-to-link">Q4: List to Link</a></li>
+    </ul>
+    <li><a href="#check-your-score-locally">Check Your Score Locally</a></li>
+  </ul>
+  <li><a href="#submit-assignment">Submit Assignment</a></li>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>
