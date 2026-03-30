@@ -54,9 +54,9 @@ class CheckingAccount(BaseAccount):
 
     def __init__(self, name, initial_deposit, account_number=0, bank=None):
         # Use superclass initializer
-        # BaseAccount.__init__(self, name, initial_deposit, account_number, bank)
+        BaseAccount.__init__(self, name, initial_deposit, account_number, bank)
         # Alternatively, recommended:
-        super().__init__(name, initial_deposit, account_number, bank)
+        # super().__init__(name, initial_deposit, account_number, bank)
         # Additional initialization
 
     def withdraw(self, amount):
@@ -65,6 +65,7 @@ class CheckingAccount(BaseAccount):
         """
         if self.account_balance() - amount < 0:
             return "ERROR: You are not allowed to overdraft a CheckingAccount."
+        # BaseAccount.withdraw(self, amount)
         return super().withdraw(amount)
 
     def account_type(self):
@@ -87,7 +88,6 @@ class SavingsAccount(BaseAccount):
 
     def account_type(self):
         return "Savings"
-
     # Display representation
     def __repr__(self):
         # Alternatively, we can use `type(self)` to infer the class.
@@ -96,7 +96,7 @@ class SavingsAccount(BaseAccount):
 
 class RetirementSavingsAccount(SavingsAccount):
     interest_rate = 0.05
-
+    # No __init__ here
     def withdraw(self, amount):
         return f"ERROR: You cannot withdraw from a {self.account_type()}."
 
@@ -151,3 +151,7 @@ class Bank:
 
 # What kinds of accounts exist in our bank?
 #Bank.account_types()
+
+# c88c = BaseAccount('C88C Base', 1000, 88)
+# checking = CheckingAccount('C88C Checking', 1000, 89)
+# savings = SavingsAccount('C88C Savings', 20000, 90)
