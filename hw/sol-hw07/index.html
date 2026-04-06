@@ -1,0 +1,755 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/hw.css">
+
+
+    <title>
+Homework 7 Solutions | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Homework 7 Solutions
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="hw07.zip" class="label label-outline">hw07.zip</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+<h2>Solution Files</h2>
+<p>You can find the solutions in <a href="hw07.py">hw07.py</a>.</p>
+
+    
+<h1 id="required-questions">Required Questions</h1>
+
+
+<br>
+
+        <button id='toggle-1' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Getting Started Videos<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-1">
+
+<h2 id="getting-started-videos" class="no-toc">Getting Started Videos</h2>
+
+
+<p>These videos may provide some helpful direction for tackling the coding
+problems on this assignment.</p>
+
+<blockquote><p>To see these videos, you should be logged into your berkeley.edu email.</p></blockquote>
+
+
+            <iframe width="560" height="315" src="https://youtube.com/embed/videoseries?list=PLx38hZJ5RLZeyxkxJFDBFdqcH8in7eY1H"
+                frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" aria-label = "c88c-hw7-getstarted"
+                allowfullscreen></iframe><p><a href='https://youtu.be/playlist?list=PLx38hZJ5RLZeyxkxJFDBFdqcH8in7eY1H'> YouTube link </a></p>
+</div>
+
+<p>Please note that <strong>Question 3 and Question 5 are optional</strong>! You can try them if you want an extra challenge, but they are out of scope until we cover inheritance. We will <strong>not</strong> be prioritizing support for these questions on Ed or during office hours.</p>
+
+<h3 id="election">Election</h3>
+
+
+<p>Let's implement a game called Election. In this game, two players compete to try
+and earn the most votes. Both players start with 0 votes and 100 popularity.</p>
+
+<p>The two players alternate turns, and the first player starts. Each turn, the
+current player chooses an action. There are two types of actions:</p>
+
+<ul>
+  <li>The player can <em>debate</em>, and either gain or lose 50 popularity. If the player
+  has popularity <code>p1</code> and the other player has popularity <code>p2</code>, then the
+  probability that the player gains 50 popularity is <code>max(0.1, p1 / (p1 + p2))</code>.
+  Note that the <code>max</code> here ensures that the probability is never lower than 0.1.</li>
+  <li>The player can give a <em>speech</em>. If the player has popularity <code>p1</code> and the other
+  player has popularity <code>p2</code>, then the player gains <code>p1 // 10</code> votes and
+  popularity and the other player loses <code>p2 // 10</code> popularity.</li>
+</ul>
+
+<p>The game ends when a player reaches 50 votes, or after a total of 10 turns have
+been played (each player has taken 5 turns). Whoever has more votes at the end
+of the game is the winner!</p>
+
+
+<h3 id="q1-player">Q1: Player</h3>
+
+
+<p>First, let's implement the <code>Player</code> class. Fill in the <code>debate</code> and <code>speech</code>
+methods, that take in another <code>Player</code> <code>other</code>, and implement the correct
+behavior as detailed above. Here are a few additional things to keep in mind:</p>
+
+<ul>
+  <li>Each player carries a random number generator (the <code>random_func</code> instance attribute),
+  which is a function that returns a random float between 0 and 1 when called.</li>
+  <li>In the <code>debate</code> method, you should call the <code>random_func</code> function to get a random number.
+  The player should gain 50 popularity if
+  the random number is smaller than the probability described above, or lose 50
+  popularity otherwise.</li>
+  <li>Neither players' popularity should ever become negative. If this
+  happens, set it equal to 0 instead.</li>
+</ul>
+
+<solution>
+
+<pre><code>### Phase 1: The Player Class
+class Player:
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; random = make_test_random()
+    &gt;&gt;&gt; p1 = Player(&#x27;Hill&#x27;, random)
+    &gt;&gt;&gt; p2 = Player(&#x27;Don&#x27;, random)
+    &gt;&gt;&gt; p1.popularity
+    100
+    &gt;&gt;&gt; p1.debate(p2)  # random() should return 0.0
+    &gt;&gt;&gt; p1.popularity
+    150
+    &gt;&gt;&gt; p2.popularity
+    100
+    &gt;&gt;&gt; p2.votes
+    0
+    &gt;&gt;&gt; p2.speech(p1)
+    &gt;&gt;&gt; p2.votes
+    10
+    &gt;&gt;&gt; p2.popularity
+    110
+    &gt;&gt;&gt; p1.popularity
+    135
+    &gt;&gt;&gt; p1.speech(p2)
+    &gt;&gt;&gt; p1.votes
+    13
+    &gt;&gt;&gt; p1.popularity
+    148
+    &gt;&gt;&gt; p2.votes
+    10
+    &gt;&gt;&gt; p2.popularity
+    99
+    &gt;&gt;&gt; for _ in range(4):  # 0.1, 0.2, 0.3, 0.4
+    ...     p1.debate(p2)
+    &gt;&gt;&gt; p2.debate(p1)
+    &gt;&gt;&gt; p2.popularity
+    49
+    &gt;&gt;&gt; p2.debate(p1)
+    &gt;&gt;&gt; p2.popularity
+    0
+    &quot;&quot;&quot;
+    def __init__(self, name, random_func):
+        self.name = name
+        self.votes = 0
+        self.popularity = 100
+        self.random_func = random_func
+
+    def debate(self, other):
+<div class="sol-highlight">        prob = max(0.1, self.popularity / (self.popularity + other.popularity))
+        if self.random_func() &lt; prob:
+            self.popularity += 50
+        else:
+            self.popularity = max(0, self.popularity &#x2d; 50)</div>
+    def speech(self, other):
+<div class="sol-highlight">        self.votes += self.popularity // 10
+        self.popularity += self.popularity // 10
+        other.popularity = max(0, other.popularity &#x2d; (other.popularity // 10))</div>
+    def choose(self, other):
+        return self.speech</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q Player<button id="copy-code-python3ok-qPlayer" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qPlayer").onclick = () => copyCode('python3 ok -q Player', "copy-code-python3ok-qPlayer");
+        </script>
+        <br/>
+
+
+<h3 id="q2-game">Q2: Game</h3>
+
+
+<p>Now, implement the <code>Game</code> class. Fill in the <code>play</code> method, which should
+alternate between the two players, starting with <code>p1</code>, and have each player take
+one turn at a time. The <code>choose</code> method in the <code>Player</code> class returns the
+method, either <code>debate</code> or <code>speech</code>, that should be called to perform the
+action.</p>
+
+<p>In addition, fill in the <code>winner</code> method, which should return the
+player with more votes, or <code>None</code> if the players are tied.</p>
+
+<solution>
+
+<pre><code>### Phase 2: The Game Class
+class Game:
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; random = make_test_random()
+    &gt;&gt;&gt; p1, p2 = Player(&#x27;Hill&#x27;,random), Player(&#x27;Don&#x27;, random)
+    &gt;&gt;&gt; g = Game(p1, p2)
+    &gt;&gt;&gt; winner = g.play()
+    &gt;&gt;&gt; p1 is winner
+    True
+    &gt;&gt;&gt; # Additional correctness tests
+    &gt;&gt;&gt; winner is g.winner()
+    True
+    &gt;&gt;&gt; g.turn
+    10
+    &gt;&gt;&gt; p1.votes = p2.votes
+    &gt;&gt;&gt; print(g.winner())
+    None
+    &quot;&quot;&quot;
+    def __init__(self, player1, player2):
+        self.p1 = player1
+        self.p2 = player2
+        self.turn = 0
+
+    def play(self):
+        while not self.game_over():
+<div class="sol-highlight">            if self.turn % 2 == 0:
+                curr, other = self.p1, self.p2
+            else:
+                curr, other = self.p2, self.p1
+            curr.choose(other)(other)
+            self.turn += 1</div>        return self.winner()
+
+    def game_over(self):
+        return max(self.p1.votes, self.p2.votes) &gt;= 50 or self.turn &gt;= 10
+
+    def winner(self):
+<div class="sol-highlight">        if self.p1.votes &gt; self.p2.votes:
+            return self.p1
+        elif self.p2.votes &gt; self.p1.votes:
+            return self.p2
+        else:
+            return None</div></code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q Game<button id="copy-code-python3ok-qGame" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qGame").onclick = () => copyCode('python3 ok -q Game', "copy-code-python3ok-qGame");
+        </script>
+        <br/>
+
+
+<h3 id="q3-new-players">Q3: New Players</h3>
+
+
+<p>The <code>choose</code> method in the <code>Player</code> class is boring because it always returns
+the <code>speech</code> method. Let's implement two new classes that inherit from <code>Player</code>,
+but have more interesting <code>choose</code> methods.</p>
+
+<p>Implement the <code>choose</code> method in the <code>AggressivePlayer</code> class, which returns the
+<code>debate</code> method if the player's popularity is less than or equal to <code>other</code>'s
+popularity, and <code>speech</code> otherwise. Also implement the <code>choose</code> method in the
+<code>CautiousPlayer</code> class, which returns the <code>debate</code> method if the player's
+popularity is 0, and <code>speech</code> otherwise.</p>
+
+<solution>
+
+<pre><code>### Phase 3: New Players
+class AggressivePlayer(Player):
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; random = make_test_random()
+    &gt;&gt;&gt; p1, p2 = AggressivePlayer(&#x27;Don&#x27;, random), Player(&#x27;Hill&#x27;, random)
+    &gt;&gt;&gt; g = Game(p1, p2)
+    &gt;&gt;&gt; winner = g.play()
+    &gt;&gt;&gt; p1 is winner
+    True
+    &gt;&gt;&gt; # Additional correctness tests
+    &gt;&gt;&gt; p1.popularity = p2.popularity
+    &gt;&gt;&gt; p1.choose(p2) == p1.debate
+    True
+    &gt;&gt;&gt; p1.popularity += 1
+    &gt;&gt;&gt; p1.choose(p2) == p1.debate
+    False
+    &gt;&gt;&gt; p2.choose(p1) == p2.speech
+    True
+    &quot;&quot;&quot;
+    def choose(self, other):
+<div class="sol-highlight">        if self.popularity &lt;= other.popularity:
+            return self.debate
+        else:
+            return self.speech</div></code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q AggressivePlayer<button id="copy-code-python3ok-qAggressivePlayer" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qAggressivePlayer").onclick = () => copyCode('python3 ok -q AggressivePlayer', "copy-code-python3ok-qAggressivePlayer");
+        </script>
+        <br/>
+
+<solution>
+
+<pre><code>class CautiousPlayer(Player):
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; random = make_test_random()
+    &gt;&gt;&gt; p1, p2 = CautiousPlayer(&#x27;Hill&#x27;, random), AggressivePlayer(&#x27;Don&#x27;, random)
+    &gt;&gt;&gt; p1.popularity = 0
+    &gt;&gt;&gt; p1.choose(p2) == p1.debate
+    True
+    &gt;&gt;&gt; p1.popularity = 1
+    &gt;&gt;&gt; p1.choose(p2) == p1.debate
+    False
+    &gt;&gt;&gt; # Additional correctness tests
+    &gt;&gt;&gt; p2.choose(p1) == p2.speech
+    True
+    &quot;&quot;&quot;
+    def choose(self, other):
+<div class="sol-highlight">        if self.popularity == 0:
+            return self.debate
+        else:
+            return self.speech</div></code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q CautiousPlayer<button id="copy-code-python3ok-qCautiousPlayer" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qCautiousPlayer").onclick = () => copyCode('python3 ok -q CautiousPlayer', "copy-code-python3ok-qCautiousPlayer");
+        </script>
+        <br/>
+
+
+<h3 id="checking-accounts">Checking Accounts</h3>
+
+
+<p>Let's improve the <code>Account</code> class from lecture, which models a bank account
+that can process deposits and withdrawals.</p>
+
+<pre><code>class Account:
+    &quot;&quot;&quot;An account has a balance and a holder.
+
+    &gt;&gt;&gt; a = Account(&#x27;John&#x27;)
+    &gt;&gt;&gt; a.deposit(10)
+    10
+    &gt;&gt;&gt; a.balance
+    10
+    &gt;&gt;&gt; a.interest
+    0.02
+    &gt;&gt;&gt; a.time_to_retire(10.25)  # 10 &#x2d;&gt; 10.2 &#x2d;&gt; 10.404
+    2
+    &gt;&gt;&gt; a.balance                # Calling time_to_retire method should not change the balance
+    10
+    &gt;&gt;&gt; a.time_to_retire(11)     # 10 &#x2d;&gt; 10.2 &#x2d;&gt; ... &#x2d;&gt; 11.040808032
+    5
+    &gt;&gt;&gt; a.time_to_retire(100)
+    117
+    &quot;&quot;&quot;
+    max_withdrawal: int = 10
+    interest: float = 0.02
+
+    def __init__(self, account_holder: str):
+        self.balance = 0
+        self.holder = account_holder
+
+    def deposit(self, amount: int) &#x2d;&gt; int:
+        self.balance = self.balance + amount
+        return self.balance
+
+    def withdraw(self, amount: int) &#x2d;&gt; int | str:
+        if amount &gt; self.balance:
+            return &quot;Insufficient funds&quot;
+        if amount &gt; self.max_withdrawal:
+            return &quot;Can&#x27;t withdraw that amount&quot;
+        self.balance = self.balance &#x2d; amount
+        return self.balance</code></pre>
+
+
+<h3 id="q4-retirement">Q4: Retirement</h3>
+
+
+<p>Add a <code>time_to_retire</code> method to the <code>Account</code> class. This method takes in an
+<code>amount</code> and returns the number of years until the current <code>balance</code> grows to at
+least <code>amount</code>, assuming that the bank adds the interest (calculated as the
+current <code>balance</code> multiplied by the <code>interest</code> rate) to the <code>balance</code> at the end
+of each year. Make sure you're not modifying the account's balance!</p>
+
+<blockquote><p><strong>Important</strong>: Calling the <code>time_to_retire</code> method should not change the account balance.</p></blockquote>
+
+<solution>
+
+<pre><code>    def time_to_retire(self, amount: float) &#x2d;&gt; int:
+        &quot;&quot;&quot;Return the number of years until balance would grow to amount.&quot;&quot;&quot;
+        assert self.balance &gt; 0 and amount &gt; 0 and self.interest &gt; 0
+<div class="sol-highlight">        future = self.balance
+        years = 0
+        while future &lt; amount:
+            future += self.interest * future
+            years += 1
+        return years</div></code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q Account<button id="copy-code-python3ok-qAccount" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qAccount").onclick = () => copyCode('python3 ok -q Account', "copy-code-python3ok-qAccount");
+        </script>
+        <br/>
+
+<div class="sol-highlight">
+
+<p>We take of our current balance, and simulate the growth from interest over
+many years. We stop once we hit the target value.</p>
+
+<p>Note that the problem solving procedure does not differ very much from an
+non OOP problem. The main difference here is make sure that we do not
+change the account balance while in the process of calculating the future
+balance. Therefore, something along these lines is necessary:</p>
+
+<pre><code>future = self.balance</code></pre>
+
+<p>Video walkthrough: <p><a href='https://youtu.be/fQzeZcI-4a0'> YouTube link </a></p></p>
+
+</div>
+
+
+<h3 id="q5-freechecking">Q5: FreeChecking</h3>
+
+
+<p>Implement the <code>FreeChecking</code> class, which is like the <code>Account</code> class
+except that it charges a withdraw fee <code>withdraw_fee</code> after
+withdrawing <code>free_withdrawals</code> number of times.
+If a withdrawal is unsuccessful, no withdrawal fee will be charged, but it still counts towards the number of free
+withdrawals remaining.</p>
+
+<solution>
+
+<pre><code>class FreeChecking(Account):
+    &quot;&quot;&quot;A bank account that charges for withdrawals, but the first two are free!
+
+    &gt;&gt;&gt; ch = FreeChecking(&#x27;Jack&#x27;)
+    &gt;&gt;&gt; ch.balance = 20
+    &gt;&gt;&gt; ch.withdraw(100)  # First one&#x27;s free. Still counts as a free withdrawal even though it was unsuccessful
+    &#x27;Insufficient funds&#x27;
+    &gt;&gt;&gt; ch.withdraw(3)    # Second withdrawal is also free
+    17
+    &gt;&gt;&gt; ch.balance
+    17
+    &gt;&gt;&gt; ch.withdraw(3)    # Now there is a fee because free_withdrawals is only 2
+    13
+    &gt;&gt;&gt; ch.withdraw(3)
+    9
+    &gt;&gt;&gt; ch2 = FreeChecking(&#x27;John&#x27;)
+    &gt;&gt;&gt; ch2.balance = 10
+    &gt;&gt;&gt; ch2.withdraw(3) # No fee
+    7
+    &gt;&gt;&gt; ch.withdraw(3)  # ch still charges a fee
+    5
+    &gt;&gt;&gt; ch.withdraw(5)  # Not enough to cover fee + withdraw
+    &#x27;Insufficient funds&#x27;
+    &quot;&quot;&quot;
+    withdraw_fee: int = 1
+    free_withdrawals: int = 2
+
+<div class="sol-highlight">    def __init__(self, account_holder: str):
+        super().__init__(account_holder)
+        self.withdrawals = 0
+
+    def withdraw(self, amount: int) &#x2d;&gt; int | str:
+        self.withdrawals += 1
+        fee = 0
+        if self.withdrawals &gt; self.free_withdrawals:
+            fee = self.withdraw_fee
+        return super().withdraw(amount + fee)
+
+    # Alternative solution where you don&#x27;t need to include init.
+    # Check out the video solution for more.
+    def withdraw(self, amount: int) &#x2d;&gt; int | str:
+        self.free_withdrawals &#x2d;= 1
+        if self.free_withdrawals &gt;= 0:
+            return super().withdraw(amount)
+        return super().withdraw(amount + self.withdraw_fee)</div></code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q FreeChecking<button id="copy-code-python3ok-qFreeChecking" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qFreeChecking").onclick = () => copyCode('python3 ok -q FreeChecking', "copy-code-python3ok-qFreeChecking");
+        </script>
+        <br/>
+
+<div class="sol-highlight">
+
+<p>We can take advantage of inheritance to make sure we add just what we need
+to <code>withdraw</code>.</p>
+
+<ul>
+  <li>For starters, a withdrawal with a fee is the same as the original
+  withdraw amount plus the amount from the fee. We can therefore represent
+  a <code>FreeChecking</code> withdraw as a "regular" <code>Account</code> withdraw in this way.</li>
+  <li>On top of the note from before, we need to do a little bit of extra
+  bookkeeping to make sure the first few withdrawals do not add the extra
+  fee. We can either create a new instance attribute or modify an existing
+  one.</li>
+</ul>
+
+<p>Video walkthrough: <p><a href='https://youtu.be/flIMJC2lY3M'> YouTube link </a></p></p>
+
+</div>
+
+
+<h2 id="check-your-score-locally">Check Your Score Locally</h2>
+
+<p>You can locally check your score on each question of this assignment by running</p>
+
+<pre><code>python3 ok &#x2d;&#x2d;score</code></pre>
+
+<p><strong>This does NOT submit the assignment!</strong> When you are satisfied with your score, submit the assignment to Gradescope to receive credit for it.</p>
+
+<h1 id="submit-assignment">Submit Assignment</h1>
+
+
+<p>Submit this assignment by uploading any files you've edited <strong>to the appropriate Gradescope assignment.</strong> <a href="/sp26/lab/lab00/#submit-with-gradescope">Lab 00</a> has detailed instructions.</p>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#instructions">Instructions</a></li>
+  <li><a href="#required-questions">Required Questions</a></li>
+  <ul>
+    <li><a href="#election">Election</a></li>
+    <li><a href="#q1-player">Q1: Player</a></li>
+    <li><a href="#q2-game">Q2: Game</a></li>
+    <li><a href="#q3-new-players">Q3: New Players</a></li>
+    <li><a href="#checking-accounts">Checking Accounts</a></li>
+    <li><a href="#q4-retirement">Q4: Retirement</a></li>
+    <li><a href="#q5-freechecking">Q5: FreeChecking</a></li>
+  </ul>
+  <ul>
+    <li><a href="#check-your-score-locally">Check Your Score Locally</a></li>
+  </ul>
+  <li><a href="#submit-assignment">Submit Assignment</a></li>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>
