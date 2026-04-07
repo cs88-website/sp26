@@ -1,0 +1,668 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/hw.css">
+
+
+    <title>
+Homework 9 | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Homework 9: Trees
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="hw09.zip" class="label label-outline">hw09.zip</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<p><em>Due by 11:59pm on Wednesday, April 15</em></p>
+
+
+
+
+
+<h2>Instructions</h2>
+
+<p>Download <a href="hw09.zip">hw09.zip</a>. Inside the archive, you will find a file called
+<a href="hw09.py">hw09.py</a>, along with a copy of the <code>ok</code> autograder.</p>
+
+<p>
+  <strong>Submission:</strong> When you are done, submit the assignment to Gradescope. You may submit more than once before the deadline; only the
+  final submission will be scored. Check that you have successfully submitted
+  your code on Gradescope.
+
+  See <a href="/sp26/lab/lab00">Lab 0</a> for more instructions on submitting assignments.
+</p>
+
+<p><strong>Using Ok:</strong> If you have any questions about using Ok, please
+refer to <a href="/sp26/articles/using-ok">this guide.</a>
+
+
+  <p><strong>Readings:</strong> You might find the following references
+  useful:</p>
+  <ul>
+  <li><a href="https://www.composingprograms.com/pages/29-recursive-objects.html#tree-class">Section 2.9.2</a></li>
+</ul>
+  
+
+<p><strong>Grading:</strong> Homework is graded based on
+correctness. Each incorrect problem will decrease the total score by one point.
+<strong>This homework is out of 6 points.</strong>
+
+
+
+
+    
+<h1 id="required-questions">Required Questions</h1>
+
+
+
+<h2 id="trees">Trees</h2>
+
+
+
+<h3 id="q1-square">Q1: Square</h3>
+
+
+<p>Write a function <code>label_squarer</code> that mutates a <code>Tree</code> with numerical labels so
+that each label is squared.</p>
+
+<solution>
+
+<pre><code>def label_squarer(t):
+    &quot;&quot;&quot;Mutates a Tree t by squaring all its elements.
+
+    &gt;&gt;&gt; t = Tree(1, [Tree(3, [Tree(5)]), Tree(7)])
+    &gt;&gt;&gt; label_squarer(t)
+    &gt;&gt;&gt; t
+    Tree(1, [Tree(9, [Tree(25)]), Tree(49)])
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q label_squarer<button id="copy-code-python3ok-qlabel_squarer" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qlabel_squarer").onclick = () => copyCode('python3 ok -q label_squarer', "copy-code-python3ok-qlabel_squarer");
+        </script>
+        <br/>
+
+
+<h3 id="q2-add-leaves">Q2: Add Leaves</h3>
+
+
+<p>Implement <code>add_d_leaves</code>, a function that takes in a <code>Tree</code> instance <code>t</code> and a number <code>v</code>.</p>
+
+<p>We define the depth of a node in <code>t</code> to be the number of edges from the root to that node. The depth of root is therefore 0.</p>
+
+<p>For each node in the tree, you should add <code>d</code> leaves to it, where <code>d</code> is the depth of the node. Every added leaf should have a label of <code>v</code>. If the node at this depth has existing branches, you should add these leaves to the end of that list of branches.</p>
+
+<p>For example, you should be adding 1 leaf with label <code>v</code> to each node at depth 1, 2 leaves to each node at depth 2, and so on.</p>
+
+<p>Here is an example of a tree <code>t</code> (shown on the left) and the result after <code>add_d_leaves</code> is applied with <code>v</code> as 5.
+<img class="img-responsive center-block" src="assets/add_leaves.png" alt="add" width="" height=""></p>
+
+<blockquote><p><strong>Hint:</strong> Use a helper function to keep track of the depth!</p>
+
+<p><strong>Hint:</strong> Be careful about when you add the new leaves to the tree.
+We only want to add leaves to the original nodes in the tree, not to
+the nodes we added.</p></blockquote>
+
+<!-- hack for separate blockquotes -->
+
+<blockquote><p>Take a look at the doctests below and try drawing out the second doctest to visualize how the function is mutating <code>t3</code>.</p></blockquote>
+
+<!-- <code-input add_d_leaves lang:python>
+
+<pre><code>def add_d_leaves(t, v):
+    &quot;&quot;&quot;Add d leaves containing v to each node at every depth d.
+
+    &gt;&gt;&gt; t_one_to_four = Tree(1, [Tree(2), Tree(3, [Tree(4)])])
+    &gt;&gt;&gt; print(t_one_to_four)
+    1
+      2
+      3
+        4
+    &gt;&gt;&gt; add_d_leaves(t_one_to_four, 5)
+    &gt;&gt;&gt; print(t_one_to_four)
+    1
+      2
+        5
+      3
+        4
+          5
+          5
+        5
+
+    &gt;&gt;&gt; t0 = Tree(9)
+    &gt;&gt;&gt; add_d_leaves(t0, 4)
+    &gt;&gt;&gt; t0
+    Tree(9)
+    &gt;&gt;&gt; t1 = Tree(1, [Tree(3)])
+    &gt;&gt;&gt; add_d_leaves(t1, 4)
+    &gt;&gt;&gt; t1
+    Tree(1, [Tree(3, [Tree(4)])])
+    &gt;&gt;&gt; t2 = Tree(2, [Tree(5), Tree(6)])
+    &gt;&gt;&gt; t3 = Tree(3, [t1, Tree(0), t2])
+    &gt;&gt;&gt; print(t3)
+    3
+      1
+        3
+          4
+      0
+      2
+        5
+        6
+    &gt;&gt;&gt; add_d_leaves(t3, 10)
+    &gt;&gt;&gt; print(t3)
+    3
+      1
+        3
+          4
+            10
+            10
+            10
+          10
+          10
+        10
+      0
+        10
+      2
+        5
+          10
+          10
+        6
+          10
+          10
+        10
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+</code-input>
+
+ --></p>
+
+<solution>
+
+<pre><code>def add_d_leaves(t, v):
+    &quot;&quot;&quot;Add d leaves containing v to each node at every depth d.
+
+    &gt;&gt;&gt; t_one_to_four = Tree(1, [Tree(2), Tree(3, [Tree(4)])])
+    &gt;&gt;&gt; print(t_one_to_four)
+    1
+      2
+      3
+        4
+    &gt;&gt;&gt; add_d_leaves(t_one_to_four, 5)
+    &gt;&gt;&gt; print(t_one_to_four)
+    1
+      2
+        5
+      3
+        4
+          5
+          5
+        5
+
+    &gt;&gt;&gt; t0 = Tree(9)
+    &gt;&gt;&gt; add_d_leaves(t0, 4)
+    &gt;&gt;&gt; t0
+    Tree(9)
+    &gt;&gt;&gt; t1 = Tree(1, [Tree(3)])
+    &gt;&gt;&gt; add_d_leaves(t1, 4)
+    &gt;&gt;&gt; t1
+    Tree(1, [Tree(3, [Tree(4)])])
+    &gt;&gt;&gt; t2 = Tree(2, [Tree(5), Tree(6)])
+    &gt;&gt;&gt; t3 = Tree(3, [t1, Tree(0), t2])
+    &gt;&gt;&gt; print(t3)
+    3
+      1
+        3
+          4
+      0
+      2
+        5
+        6
+    &gt;&gt;&gt; add_d_leaves(t3, 10)
+    &gt;&gt;&gt; print(t3)
+    3
+      1
+        3
+          4
+            10
+            10
+            10
+          10
+          10
+        10
+      0
+        10
+      2
+        5
+          10
+          10
+        6
+          10
+          10
+        10
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q add_d_leaves<button id="copy-code-python3ok-qadd_d_leaves" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qadd_d_leaves").onclick = () => copyCode('python3 ok -q add_d_leaves', "copy-code-python3ok-qadd_d_leaves");
+        </script>
+        <br/>
+
+
+<h3 id="q3-balanced-tree">Q3: Balanced Tree</h3>
+
+
+<p>The <code>sequence_to_tree</code> function takes a linked list and converts it into
+a <em>balanced binary search tree</em>. Let's break down what this means.</p>
+
+<p>A <code>Tree</code> is <em>balanced</em> if:</p>
+
+<ul>
+  <li>It is a leaf, or</li>
+  <li>It has exactly one branch and that is a leaf, or</li>
+  <li>It has two branches and the number of nodes in its first branch differs from
+  the number of nodes in its second branch by at most 1, and both branches are
+  also balanced.</li>
+</ul>
+
+<p>Examples of balanced trees:</p>
+
+<pre><code class="py">Tree(1)                      # leaf
+Tree(1, [Tree(2)])           # one branch is a leaf
+Tree(1, [Tree(2), Tree(3)])  # two branches with one node each</code></pre>
+
+
+
+<p>Examples of unbalanced trees:</p>
+
+<pre><code class="py">Tree(1, [Tree(2, [Tree(3)])])            # one branch not a leaf
+Tree(1, [Tree(2),                        # Mismatch: branch with 1 node
+          Tree(3, [Tree(4, [Tree(5)])])]) #        vs branch with 3 nodes</code></pre>
+
+
+
+<p>A <code>Tree</code> is a <em>binary search tree</em> if:</p>
+
+<ul>
+  <li>Every subtree has at most two branches, and</li>
+  <li>All nodes in the left subtree come before the root label and all nodes in the right subtree come
+  after the root label</li>
+</ul>
+
+<p>Examples of binary search trees:</p>
+
+<pre><code class="py">Tree(1)                      # leaf
+Tree(2, [Tree(1)])           # left subtree label 1 &lt; root label 2
+Tree(2, [Tree(1), Tree(3)])  # left subtree label 1 &lt; root label 2 &lt; right subtree label 3</code></pre>
+
+
+
+<p>Examples that are NOT binary search trees:</p>
+
+<pre><code class="py">Tree(1, [Tree(2), Tree(3), Tree(4)])  # more than 2 branches
+Tree(1, [Tree(2), Tree(3)])           # left subtree label 2 &gt; root label 1</code></pre>
+
+
+
+<p>We have already provided the implementation of <code>sequence_to_tree</code>,
+but it's your job to implement a helper function <code>partial_tree(s, n)</code>,
+which converts the first <code>n</code> elements of the <strong>sorted</strong> linked list <code>s</code> into a
+balanced binary search tree. <strong>The return value is a two-element tuple</strong>: the resulting
+tree and the rest of the linked list.</p>
+
+<blockquote><p><em>Hint</em>: This function requires two recursive calls. The first call
+builds a left branch out of the first <code>left_size</code> elements of s. Then,
+the next element is used as the root label of the returned tree. Finally,
+the second recursive call builds the right branch out of the next
+<code>right_size</code> elements. In total, <code>(left_size + 1 + right_size) = n</code>,
+where 1 is for the label.</p></blockquote>
+
+<solution>
+
+<pre><code>def partial_tree(s: Link, n: int):
+    &quot;&quot;&quot;Return a balanced binary search tree of the first n elements of Link s,
+    along with the rest of s.
+
+    &gt;&gt;&gt; s = Link(1, Link(2, Link(3, Link(4, Link(5)))))
+    &gt;&gt;&gt; partial_tree(s, 3)
+    (Tree(2, [Tree(1), Tree(3)]), Link(4, Link(5)))
+    &gt;&gt;&gt; t = Link(&#x2d;2, Link(&#x2d;1, Link(0, s)))
+    &gt;&gt;&gt; tree, lnk = partial_tree(t, 7) # first element of tuple goes into tree, second goes into lnk
+    &gt;&gt;&gt; tree
+    Tree(1, [Tree(&#x2d;1, [Tree(&#x2d;2), Tree(0)]), Tree(3, [Tree(2), Tree(4)])])
+    &gt;&gt;&gt; lnk
+    Link(5)
+    &quot;&quot;&quot;
+    if n == 1:
+        return (Tree(s.first), s.rest)
+    elif n == 2:
+        return (Tree(s.first, [Tree(s.rest.first)]), s.rest.rest)
+    else:
+        left_size = (n &#x2d; 1) // 2
+        right_size = n &#x2d; left_size &#x2d; 1
+        "*** YOUR CODE HERE ***"
+
+def sequence_to_tree(s: Link):
+    &quot;&quot;&quot;Return a balanced binary search tree containing the elements of sorted Link s.
+
+    Note: this implementation is complete, but the definition of partial_tree
+    above is not complete.
+
+    &gt;&gt;&gt; sequence_to_tree(Link(1, Link(2, Link(3))))
+    Tree(2, [Tree(1), Tree(3)])
+    &gt;&gt;&gt; elements = Link(1, Link(2, Link(3, Link(4, Link(5, Link(6, Link(7)))))))
+    &gt;&gt;&gt; sequence_to_tree(elements)
+    Tree(4, [Tree(2, [Tree(1), Tree(3)]), Tree(6, [Tree(5), Tree(7)])])
+    &quot;&quot;&quot;
+
+    def link_length(s: Link):
+        &quot;&quot;&quot;Return the length of Linked List s.&quot;&quot;&quot;
+        length = 0
+        while s is not Link.empty:
+            length += 1
+            s = s.rest
+        return length
+
+    return partial_tree(s, link_length(s))[0]</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q partial_tree
+python3 ok -q sequence_to_tree<button id="copy-code-python3ok-qpartial_treepython3ok-qsequence_to_tree" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qpartial_treepython3ok-qsequence_to_tree").onclick = () => copyCode('python3 ok -q partial_tree\npython3 ok -q sequence_to_tree', "copy-code-python3ok-qpartial_treepython3ok-qsequence_to_tree");
+        </script>
+        <br/>
+
+
+<h2 id="check-your-score-locally">Check Your Score Locally</h2>
+
+<p>You can locally check your score on each question of this assignment by running</p>
+
+<pre><code>python3 ok &#x2d;&#x2d;score</code></pre>
+
+<p><strong>This does NOT submit the assignment!</strong> When you are satisfied with your score, submit the assignment to Gradescope to receive credit for it.</p>
+
+
+<h1 id="submit-assignment">Submit Assignment</h1>
+
+
+<p>Submit this assignment by uploading any files you've edited <strong>to the appropriate Gradescope assignment.</strong> <a href="/sp26/lab/lab00/#submit-with-gradescope">Lab 00</a> has detailed instructions.</p>
+
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#required-questions">Required Questions</a></li>
+  <ul>
+    <li><a href="#trees">Trees</a></li>
+    <ul>
+      <li><a href="#q1-square">Q1: Square</a></li>
+      <li><a href="#q2-add-leaves">Q2: Add Leaves</a></li>
+      <li><a href="#q3-balanced-tree">Q3: Balanced Tree</a></li>
+    </ul>
+    <li><a href="#check-your-score-locally">Check Your Score Locally</a></li>
+  </ul>
+  <li><a href="#submit-assignment">Submit Assignment</a></li>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>
