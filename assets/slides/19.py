@@ -71,6 +71,12 @@ def binary_search_rec(lst, target, lo=0, hi=None):
     else:
         return binary_search_rec(lst, target, lo, mid - 1)
 
+def linear_pow(base, exp):
+    result = 1
+    for _ in range(exp):
+        result *= base
+    return result
+
 def fast_pow(base, exp):
     result = 1
     while exp > 0:
@@ -85,3 +91,14 @@ def mystery_b(n):
         return [[]]
     rest = mystery_b(n - 1)
     return rest + [s + [n] for s in rest]
+
+## Just for fun.
+import time
+
+def time_function(f, *args):
+    start = time.perf_counter()
+    result = f(*args)
+    elapsed = time.perf_counter() - start
+    return result, elapsed
+
+# time_function(fast_pow, 2, 10)
