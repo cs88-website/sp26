@@ -1,5 +1,3 @@
-
-
 def iter_fib(n):
     x, y = 0, 1
     for _ in range(n):

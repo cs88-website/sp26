@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+    
+    <link rel="stylesheet" href="/sp26/assets/css/lab.css">
+
+
+    <title>
+Lab 10: Iterators and Generators | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Lab 10: Iterators and Generators
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="lab10.zip" class="label label-outline">lab10.zip</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<p><i>Due by 11:59pm on Friday, April 17.</i></p>
+
+
+
+
+
+
+<h2 id='starter-files'>Starter Files</h2>
+
+<p>Download <a href="lab10.zip">lab10.zip</a>.</p>
+
+
+
+
+
+
+
+
+    
+<h2 id="wwpd-with-iterators">WWPD with Iterators</h2>
+
+
+
+<h3 id="q1-wwpd-iterators">Q1: WWPD: Iterators</h3>
+
+
+<blockquote><p><strong>Important:</strong>
+Enter <code>StopIteration</code> if a <code>StopIteration</code> exception occurs,
+<code>Error</code> if you believe a different error occurs,
+and <code>Iterator</code> if the output is an iterator object.</p></blockquote>
+
+<!-- separate block quotes -->
+
+<blockquote><p><strong>Important:</strong> Python's built-in function <code>map</code>, <code>filter</code>, and <code>zip</code> return <em>iterators</em>, not lists.</p></blockquote>
+
+<!-- separate block quotes -->
+
+<blockquote><p>Use Ok to test your knowledge with the following "What Would Python Display?" questions:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q iterators-wwpd -u<button id="copy-code-python3ok-qiterators-wwpd-u" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qiterators-wwpd-u").onclick = () => copyCode('python3 ok -q iterators-wwpd -u', "copy-code-python3ok-qiterators-wwpd-u");
+        </script>
+        <br/></blockquote>
+
+<pre><code>&gt;&gt;&gt; s = [1, 2, 3, 4]
+&gt;&gt;&gt; t = iter(s)
+&gt;&gt;&gt; next(s)
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x45;&#x72;&#x72;&#x6f;&#x72;</div>
+&gt;&gt;&gt; next(t)
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x31;</div>
+&gt;&gt;&gt; next(t)
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x32;</div>
+&gt;&gt;&gt; next(iter(s))
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x31;</div>
+&gt;&gt;&gt; next(iter(s))
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x31;</div>
+&gt;&gt;&gt; u = t
+&gt;&gt;&gt; next(u)
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x33;</div>
+&gt;&gt;&gt; next(t)
+<div class="alt prompt-1">______</div><div class="solution prompt-1">&#x34;</div></code></pre>
+        <button id='prompt-1' class='btn btn-outline btn-lg solutiontoggle prompt'>
+        Toggle Solution<noscript> (enable JavaScript)</noscript>
+        </button>
+        
+
+<pre><code>&gt;&gt;&gt; r = range(6)
+&gt;&gt;&gt; r_iter = iter(r)
+&gt;&gt;&gt; next(r_iter)
+<div class="alt prompt-2">______</div><div class="solution prompt-2">&#x30;</div>
+&gt;&gt;&gt; [x + 1 for x in r]
+<div class="alt prompt-2">______</div><div class="solution prompt-2">&#x5b;&#x31;&#x2c;&#x20;&#x32;&#x2c;&#x20;&#x33;&#x2c;&#x20;&#x34;&#x2c;&#x20;&#x35;&#x2c;&#x20;&#x36;&#x5d;</div>
+&gt;&gt;&gt; [x + 1 for x in r_iter]
+<div class="alt prompt-2">______</div><div class="solution prompt-2">&#x5b;&#x32;&#x2c;&#x20;&#x33;&#x2c;&#x20;&#x34;&#x2c;&#x20;&#x35;&#x2c;&#x20;&#x36;&#x5d;</div>
+&gt;&gt;&gt; next(r_iter)
+<div class="alt prompt-2">______</div><div class="solution prompt-2">&#x53;&#x74;&#x6f;&#x70;&#x49;&#x74;&#x65;&#x72;&#x61;&#x74;&#x69;&#x6f;&#x6e;</div></code></pre>
+        <button id='prompt-2' class='btn btn-outline btn-lg solutiontoggle prompt'>
+        Toggle Solution<noscript> (enable JavaScript)</noscript>
+        </button>
+        
+
+<pre><code>&gt;&gt;&gt; map_iter = map(lambda x : x + 10, range(5))
+&gt;&gt;&gt; next(map_iter)
+<div class="alt prompt-3">______</div><div class="solution prompt-3">&#x31;&#x30;</div>
+&gt;&gt;&gt; next(map_iter)
+<div class="alt prompt-3">______</div><div class="solution prompt-3">&#x31;&#x31;</div>
+&gt;&gt;&gt; list(map_iter)
+<div class="alt prompt-3">______</div><div class="solution prompt-3">&#x5b;&#x31;&#x32;&#x2c;&#x20;&#x31;&#x33;&#x2c;&#x20;&#x31;&#x34;&#x5d;</div>
+&gt;&gt;&gt; for e in filter(lambda x : x % 4 == 0, range(1000, 1008)):
+...     print(e)
+<div class="alt prompt-3">______</div><div class="solution prompt-3">&#x31;&#x30;&#x30;&#x30;&#xa;&#x31;&#x30;&#x30;&#x34;</div>
+&gt;&gt;&gt; [x + y for x, y in zip([1, 2, 3], [4, 5, 6])]
+<div class="alt prompt-3">______</div><div class="solution prompt-3">&#x5b;&#x35;&#x2c;&#x20;&#x37;&#x2c;&#x20;&#x39;&#x5d;</div></code></pre>
+        <button id='prompt-3' class='btn btn-outline btn-lg solutiontoggle prompt'>
+        Toggle Solution<noscript> (enable JavaScript)</noscript>
+        </button>
+        
+
+
+<h1 id="required-questions">Required Questions</h1>
+
+
+
+<h3 id="q2-count-occurrences">Q2: Count Occurrences</h3>
+
+
+<p>Implement <code>count_occurrences</code>, which takes an iterator <code>t</code>, an integer <code>n</code>, and
+a value <code>x</code>. It returns the number of elements in the
+first <code>n</code> elements of <code>t</code> that are equal to <code>x</code>.</p>
+
+<p>You can assume that <code>t</code> has at least <code>n</code> elements.</p>
+
+<blockquote><p><strong>Important</strong>: You should call <code>next</code> on <code>t</code> exactly <code>n</code> times. If you
+need to iterate through more than <code>n</code> elements, think about how you can
+optimize your solution.</p></blockquote>
+
+<solution>
+
+<pre><code>from typing import Iterator  # &quot;t: Iterator[int]&quot; means t is an iterator that yields integers
+
+def count_occurrences(t: Iterator[int], n: int, x: int) &#x2d;&gt; int:
+    &quot;&quot;&quot;Return the number of times that x is equal to one of the
+    first n elements of iterator t.
+
+    &gt;&gt;&gt; s = iter([10, 9, 10, 9, 9, 10, 8, 8, 8, 7])
+    &gt;&gt;&gt; count_occurrences(s, 10, 9)
+    3
+    &gt;&gt;&gt; t = iter([10, 9, 10, 9, 9, 10, 8, 8, 8, 7])
+    &gt;&gt;&gt; count_occurrences(t, 3, 10)
+    2
+    &gt;&gt;&gt; u = iter([3, 2, 2, 2, 1, 2, 1, 4, 4, 5, 5, 5])
+    &gt;&gt;&gt; count_occurrences(u, 1, 3)  # Only iterate over 3
+    1
+    &gt;&gt;&gt; count_occurrences(u, 3, 2)  # Only iterate over 2, 2, 2
+    3
+    &gt;&gt;&gt; list(u)                     # Ensure that the iterator has advanced the right amount
+    [1, 2, 1, 4, 4, 5, 5, 5]
+    &gt;&gt;&gt; v = iter([4, 1, 6, 6, 7, 7, 6, 6, 2, 2, 2, 5])
+    &gt;&gt;&gt; count_occurrences(v, 6, 6)
+    2
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q count_occurrences<button id="copy-code-python3ok-qcount_occurrences" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qcount_occurrences").onclick = () => copyCode('python3 ok -q count_occurrences', "copy-code-python3ok-qcount_occurrences");
+        </script>
+        <br/>
+
+
+<h3 id="q3-trap">Q3: Trap</h3>
+
+
+<p>Write a generator function that yields the first <code>k</code> values in iterable <code>s</code>,
+but raises a <code>ValueError</code> exception if any more values are requested. You may
+assume that <code>s</code> has at least <code>k</code> values.</p>
+
+<blockquote><p>To raise an exception, use a <code>raise</code> statement:</p>
+
+<pre><code>&gt;&gt;&gt; def foo():
+...     raise ValueError(&quot;This is an error message.&quot;)
+...
+&gt;&gt;&gt; foo()
+ValueError: This is an error message.</code></pre></blockquote>
+
+<solution>
+
+<pre><code>def trap(s, k):
+    &quot;&quot;&quot;Return a generator that yields the first K values in iterable S,
+    but raises a ValueError exception if any more values are requested.
+
+    &gt;&gt;&gt; t = trap([3, 2, 1], 2)
+    &gt;&gt;&gt; next(t)
+    3
+    &gt;&gt;&gt; next(t)
+    2
+    &gt;&gt;&gt; next(t)
+    Traceback (most recent call last):
+        ...
+    ValueError: It&#x27;s a trap!
+    &gt;&gt;&gt; list(trap(range(5), 5))
+    Traceback (most recent call last):
+        ...
+    ValueError: It&#x27;s a trap!
+    &gt;&gt;&gt; t2 = trap(map(abs, reversed(range(&#x2d;6, &#x2d;4))), 2)
+    &gt;&gt;&gt; next(t2)
+    5
+    &gt;&gt;&gt; next(t2)
+    6
+    &gt;&gt;&gt; next(t2)
+    Traceback (most recent call last):
+        ...
+    ValueError: It&#x27;s a trap!
+    &gt;&gt;&gt; t3 = trap([1, 5, 6, 7, 10], 3)
+    &gt;&gt;&gt; next(t3)
+    1
+    &gt;&gt;&gt; next(t3)
+    5
+    &gt;&gt;&gt; next(t3)
+    6
+    &gt;&gt;&gt; next(t3)
+    Traceback (most recent call last):
+        ...
+    ValueError: It&#x27;s a trap!
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q trap<button id="copy-code-python3ok-qtrap" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qtrap").onclick = () => copyCode('python3 ok -q trap', "copy-code-python3ok-qtrap");
+        </script>
+        <br/>
+
+
+
+
+<h3 id="q4-hailstone">Q4: Hailstone</h3>
+
+
+<p>Write a generator function that outputs the hailstone sequence starting at number <code>n</code>.</p>
+
+<p>Here's a quick reminder of how the hailstone sequence is defined:</p>
+
+<ol>
+  <li>Pick a positive integer <code>n</code> as the start.</li>
+  <li>If <code>n</code> is even, divide it by 2.</li>
+  <li>If <code>n</code> is odd, multiply it by 3 and add 1.</li>
+  <li>Continue this process until <code>n</code> is 1.</li>
+</ol>
+
+<p>Make sure you don't create an infinite generator!</p>
+
+<blockquote><p>As an extra challenge, try writing a solution using recursion. Since <code>hailstone</code> returns a generator, you can <code>yield from</code> a call to <code>hailstone</code>!</p></blockquote>
+
+<solution>
+
+<pre><code>def hailstone(n):
+    &quot;&quot;&quot;Yields the elements of the hailstone sequence starting at n.
+
+    &gt;&gt;&gt; for num in hailstone(10):
+    ...     print(num)
+    10
+    5
+    16
+    8
+    4
+    2
+    1
+    &quot;&quot;&quot;
+    "*** YOUR CODE HERE ***"
+</code></pre>
+
+</solution>
+
+<p>Use Ok to test your code:</p><pre style="margin-bottom:0;"><code class="nohighlight">python3 ok -q hailstone<button id="copy-code-python3ok-qhailstone" class="inline-copy-button"><div class="copy-tooltip"><span>Copy</span></div>✂️</a></code></pre>
+        <script>
+        document.getElementById("copy-code-python3ok-qhailstone").onclick = () => copyCode('python3 ok -q hailstone', "copy-code-python3ok-qhailstone");
+        </script>
+        <br/>
+
+<!--  -->
+
+
+<h2 id="check-your-score-locally">Check Your Score Locally</h2>
+
+<p>You can locally check your score on each question of this assignment by running</p>
+
+<pre><code>python3 ok &#x2d;&#x2d;score</code></pre>
+
+<p><strong>This does NOT submit the assignment!</strong> When you are satisfied with your score, submit the assignment to Gradescope to receive credit for it.</p>
+
+
+<h1 id="submit-assignment">Submit Assignment</h1>
+
+
+<p>Submit this assignment by uploading any files you've edited <strong>to the appropriate Gradescope assignment.</strong> <a href="/sp26/lab/lab00/#submit-with-gradescope">Lab 00</a> has detailed instructions.</p>
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#wwpd-with-iterators">WWPD with Iterators</a></li>
+  <ul>
+    <li><a href="#q1-wwpd-iterators">Q1: WWPD: Iterators</a></li>
+  </ul>
+  <li><a href="#required-questions">Required Questions</a></li>
+  <ul>
+    <li><a href="#q2-count-occurrences">Q2: Count Occurrences</a></li>
+    <li><a href="#q3-trap">Q3: Trap</a></li>
+    <li><a href="#q4-hailstone">Q4: Hailstone</a></li>
+  </ul>
+  <ul>
+    <li><a href="#check-your-score-locally">Check Your Score Locally</a></li>
+  </ul>
+  <li><a href="#submit-assignment">Submit Assignment</a></li>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>

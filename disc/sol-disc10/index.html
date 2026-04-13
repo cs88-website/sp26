@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/disc.css">
+
+
+    <title>
+Discussion 10 | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Discussion 10: Iterators, Generators
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="disc10.pdf" class="label label-outline">disc10.pdf</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<!-- <div class="alert storable-login-status"></div> -->
+
+
+    
+<h1 id="iterators">Iterators</h1>
+
+
+<p>In Python, <strong>iterables</strong> are formally implemented as objects that can be passed into the built-in <code>iter</code>
+function to produce an <em>iterator</em>. An <strong>iterator</strong> is another type of object
+that can produce elements one at a time with the <code>next</code> function.</p>
+
+<ul>
+  <li><code>iter(iterable)</code>: Returns an iterator over the elements of the given iterable.</li>
+  <li><code>next(iterator)</code>: Returns the next element in an iterator, or raises a <code>StopIteration</code>
+  exception if there are no elements left.</li>
+</ul>
+
+<p>For example, a list of numbers is an iterable,
+since <code>iter</code> gives us an iterator over the given sequence, which
+we can navigate using the <code>next</code> function:</p>
+
+<pre><code>&gt;&gt;&gt; lst = [1, 2, 3]
+&gt;&gt;&gt; lst_iter = iter(lst)
+&gt;&gt;&gt; lst_iter
+&lt;list_iterator object ...&gt;
+&gt;&gt;&gt; next(lst_iter)
+1
+&gt;&gt;&gt; next(lst_iter)
+2
+&gt;&gt;&gt; next(lst_iter)
+3
+&gt;&gt;&gt; next(lst_iter)
+StopIteration</code></pre>
+
+<p>Iterators are very simple. There is only a mechanism to get the next element
+in the iterator: <code>next</code>. There is no way to index into an iterator
+and there is no way to go backward. Once an iterator has produced an element,
+there is no way for us to get that element again unless we store it.</p>
+
+<p>Note that iterators themselves are iterables: calling <code>iter</code> on an iterator
+simply returns the same iterator object.</p>
+
+
+<h3 id="q1-repeated">Q1: Repeated</h3>
+
+
+<p>Implement <code>repeated</code>, which takes in an iterator <code>t</code> and an integer <code>k</code> greater
+than 1. It returns the first value in <code>t</code> that appears <code>k</code> times in a row.</p>
+
+<blockquote><p><strong>Important:</strong> Call <code>next</code> on <code>t</code> only the minimum number of times required.
+Assume that there is an element of <code>t</code> repeated at least <code>k</code> times in a row.</p>
+
+<p><strong>Hint</strong>:
+If you are receiving a <code>StopIteration</code> exception,
+your <code>repeated</code> function is calling <code>next</code> too many times.</p></blockquote>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="repeated-disc-input" style="height:612px;"></div>
+            <a href="javascript:void" id="modal-link-repeated-disc-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-repeated-disc-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-repeated-disc-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def repeated(t, k):\n    &quot;&quot;&quot;Return the first value in iterator t that appears k times in a row,\n    calling next on t as few times as possible.\n\n    &gt;&gt;&gt; s = iter([10, 9, 10, 9, 9, 10, 8, 8, 8, 7])\n    &gt;&gt;&gt; repeated(s, 2)\n    9\n    &gt;&gt;&gt; t = iter([10, 9, 10, 9, 9, 10, 8, 8, 8, 7])\n    &gt;&gt;&gt; repeated(t, 3)\n    8\n    &gt;&gt;&gt; u = iter([3, 2, 2, 2, 1, 2, 1, 4, 4, 5, 5, 5])\n    &gt;&gt;&gt; repeated(u, 3)\n    2\n    &gt;&gt;&gt; repeated(u, 3)\n    5\n    &gt;&gt;&gt; v = iter([4, 1, 6, 6, 7, 7, 8, 8, 2, 2, 2, 5])\n    &gt;&gt;&gt; repeated(v, 3)\n    2\n    &quot;&quot;&quot;\n    assert k &gt; 1\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n', "python", "repeated-disc-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def repeated(t, k):
+    &quot;&quot;&quot;Return the first value in iterator t that appears k times in a row,
+    calling next on t as few times as possible.
+
+    &gt;&gt;&gt; s = iter([10, 9, 10, 9, 9, 10, 8, 8, 8, 7])
+    &gt;&gt;&gt; repeated(s, 2)
+    9
+    &gt;&gt;&gt; t = iter([10, 9, 10, 9, 9, 10, 8, 8, 8, 7])
+    &gt;&gt;&gt; repeated(t, 3)
+    8
+    &gt;&gt;&gt; u = iter([3, 2, 2, 2, 1, 2, 1, 4, 4, 5, 5, 5])
+    &gt;&gt;&gt; repeated(u, 3)
+    2
+    &gt;&gt;&gt; repeated(u, 3)
+    5
+    &gt;&gt;&gt; v = iter([4, 1, 6, 6, 7, 7, 8, 8, 2, 2, 2, 5])
+    &gt;&gt;&gt; repeated(v, 3)
+    2
+    &quot;&quot;&quot;
+    assert k &gt; 1
+    count = 0
+    last_item = None
+    while True:
+        item = next(t)
+        if item == last_item:
+            count += 1
+        else:
+            last_item = item
+            count = 1
+        if count == k:
+            return item
+</code></pre>
+
+            </div>
+        
+
+<div class="page-break"></div>
+
+
+<h1 id="generators">Generators</h1>
+
+
+<p>We can define custom iterators by writing a <em>generator function</em>,
+which returns a special type of iterator called a <strong>generator</strong>.</p>
+
+<p>A generator function looks like a normal Python function, except
+that it has at least one <code>yield</code> statement.
+When we call a generator function, a <strong><em>generator</em></strong> <em>object</em>
+is returned without evaluating the body of the generator function itself.
+Note that this is different from ordinary Python functions.
+While generator functions and normal functions look the same,
+their evaluation rules are very different!</p>
+
+<p>When we first call <code>next</code> on the returned generator,
+we will begin evaluating the body of the generator function until
+an element is yielded or the function otherwise stops
+(such as if we <code>return</code>).
+The generator remembers where we stopped,
+and will continue evaluating from that stopping point
+the next time we call <code>next</code>.</p>
+
+<p>As with other iterators, if there are no more elements to generate,
+then calling <code>next</code> on the generator raises a <code>StopIteration</code> exception.</p>
+
+
+<h3 id="q2-filter-iter">Q2: Filter-Iter</h3>
+
+<p>Implement a generator function called <code>filter_iter(iterable, f)</code> that only yields
+elements of <code>iterable</code> for which <code>f</code> returns <code>True</code>. <strong>Remember, <code>iterable</code> could be infinite!</strong></p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="filter-iter-input" style="height:468px;"></div>
+            <a href="javascript:void" id="modal-link-filter-iter-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-filter-iter-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-filter-iter-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def filter_iter(iterable, f):\n    &quot;&quot;&quot;\n    Generates elements of iterable for which f returns True.\n    &gt;&gt;&gt; is_even = lambda x: x % 2 == 0\n    &gt;&gt;&gt; list(filter_iter(range(5), is_even)) # a list of the values yielded from the call to filter_iter\n    [0, 2, 4]\n    &gt;&gt;&gt; all_odd = (2*y&#x2d;1 for y in range(5))\n    &gt;&gt;&gt; list(filter_iter(all_odd, is_even))\n    []\n    &gt;&gt;&gt; naturals = (n for n in range(1, 100))\n    &gt;&gt;&gt; s = filter_iter(naturals, is_even)\n    &gt;&gt;&gt; next(s)\n    2\n    &gt;&gt;&gt; next(s)\n    4\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n\n', "python", "filter-iter-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def filter_iter(iterable, f):
+    &quot;&quot;&quot;
+    Generates elements of iterable for which f returns True.
+    &gt;&gt;&gt; is_even = lambda x: x % 2 == 0
+    &gt;&gt;&gt; list(filter_iter(range(5), is_even)) # a list of the values yielded from the call to filter_iter
+    [0, 2, 4]
+    &gt;&gt;&gt; all_odd = (2*y&#x2d;1 for y in range(5))
+    &gt;&gt;&gt; list(filter_iter(all_odd, is_even))
+    []
+    &gt;&gt;&gt; naturals = (n for n in range(1, 100))
+    &gt;&gt;&gt; s = filter_iter(naturals, is_even)
+    &gt;&gt;&gt; next(s)
+    2
+    &gt;&gt;&gt; next(s)
+    4
+    &quot;&quot;&quot;
+    for elem in iterable:
+        if f(elem):
+            yield elem
+
+# Alternate solution (only works if iterable is not an infinite iterator)
+def filter_iter(iterable, f):
+    yield from [elem for elem in iterable if f(elem)]
+</code></pre>
+
+            </div>
+        
+
+
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#iterators">Iterators</a></li>
+  <ul>
+    <li><a href="#q1-repeated">Q1: Repeated</a></li>
+  </ul>
+  <li><a href="#generators">Generators</a></li>
+  <ul>
+    <li><a href="#q2-filter-iter">Q2: Filter-Iter</a></li>
+  </ul>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>
