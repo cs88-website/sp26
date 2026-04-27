@@ -1,0 +1,26 @@
+{
+    "name": "Homework 10",
+    "endpoint": "cal/cs88/sp26/hw10",
+    "src": [
+        "hw10.py"
+    ],
+    "tests": {
+        "hw*.py": "doctest",
+        "tests/*.py": "ok_test"
+    },
+    "default_tests": [
+        "IteratorRestart",
+        "amplify",
+        "countdown",
+        "Countdown"
+    ],
+    "protocols": [
+        "restore",
+        "file_contents",
+        "unlock",
+        "grading",
+        "analytics",
+        "help",
+        "backup"
+    ]
+}

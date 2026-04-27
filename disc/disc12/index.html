@@ -1,0 +1,919 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="Data C88C: Computational Structures in Data Science" />
+    <meta name="keywords" content ="Computer Science, Programming, Berkeley, EECS" />
+    <meta name="author" content ="Michael Ball" />
+    <!-- CHANGED CAREFUL -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/sp26/assets/js/hl.js"></script>
+    <script src="/sp26/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/sp26/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/sp26/assets/css/style.css">
+    <link rel="stylesheet" href="/sp26/assets/css/mono-blue.css">
+    <link rel="icon" href="/sp26/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/disc.css">
+
+
+    <title>
+Discussion 12 | Data C88C Spring 2026
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" aria-label="Toggle Navigation Bar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/sp26/">
+            Data C88C
+            <!-- <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/> -->
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+            <li><a href="/sp26/">Schedule</a></li>
+            
+            <li><a href="/sp26/articles/about-c88c/">Syllabus</a></li>
+            
+            <li><a href="https://edstem.org/us/courses/94478/discussion/">Ed</a></li>
+            
+            <li><a href="/sp26/office-hours/">Google Calendar</a></li>
+            
+            <li><a href="/sp26/articles/contact-c88c/">Contact</a></li>
+            
+
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="https://go.c88c.org/here">Lab Attendance Form</a></li>
+                
+                <li><a href="https://go.c88c.org/extensions">Request an Extension</a></li>
+                
+                <li><a href="https://oh.c88c.org/">Office Hours Queue</a></li>
+                
+                <li><a href="https://sections.c88c.org">Sections Sign Up</a></li>
+                
+                <li><a href="https://www.gradescope.com/courses/1227776">Gradescope</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182/external_tools/90481">Lecture Recordings</a></li>
+                
+                <li><a href="https://pythontutor.com/cp/composingprograms.html">Python Tutor</a></li>
+                
+                <li><a href="https://bcourses.berkeley.edu/courses/1552182">bCourses</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/resources/">Past Exams & Websites</a></li>
+                
+                <li><a href="https://www.composingprograms.com">Textbook</a></li>
+                
+                <li><a href="https://drive.google.com/file/d/1O72u0ml65pibcjz-PXKpqeJDKaVqQ3D8/view">Debugging Guide</a></li>
+                
+                <li><a href="/sp26/articles/studying/">Studying Guide</a></li>
+                
+                <li><a href="/sp26/articles/composition/">Composition Guide</a></li>
+                
+                <li><a href="/sp26/articles/campus-res/">Campus Resources</a></li>
+                
+              </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <li><a href="/sp26/instructor">Instructors</a></li>
+                
+                <li><a href="/sp26/staff">TAs & Tutors</a></li>
+                
+              </ul>
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Discussion 12: Final Review
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="disc12.pdf" class="label label-outline">disc12.pdf</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<!-- <div class="alert storable-login-status"></div> -->
+
+
+    
+<h1 id="environment-diagrams">Environment Diagrams</h1>
+
+
+
+<h3 id="q1-nested-calls-diagrams">Q1: Nested Calls Diagrams</h3>
+
+
+<p>Draw the environment diagram that results from executing the code below. You may not need to use all of the frames and blanks provided to you.</p>
+
+
+<pre><code>def f(x):
+    return x
+
+def g(x, y):
+    if x(y):
+        return not y
+    return y
+
+x = 3
+x = g(f, x)
+f = g(f, 0)</code></pre>
+
+        <div class="env-diagram" id=env-diagram-nested-calls-diagram>
+          <div class="env-diagram-objects">
+            <div>Objects</div>
+            <ul><li>
+            <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-object0-connector">▶</button>
+            <input class="env-text-storable" id="env-diagram-nested-calls-diagram-object0-value" type="text">
+            </li><li>
+            <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-object1-connector">▶</button>
+            <input class="env-text-storable" id="env-diagram-nested-calls-diagram-object1-value" type="text">
+            </li><li>
+            <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-object2-connector">▶</button>
+            <input class="env-text-storable" id="env-diagram-nested-calls-diagram-object2-value" type="text">
+            </li>
+            <li><button class="env-diagram-trash" title="Click here to remove a binding">🗑️</button></li>
+            </ul>
+        </div>
+          <div class="env-diagram-frame">
+                <div>Global frame</div>
+                <table class="table">
+                    <tbody>
+                    
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame0-binding0-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame0-binding0-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame0-binding0-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame0-binding1-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame0-binding1-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame0-binding1-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame0-binding2-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame0-binding2-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame0-binding2-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                    
+                    </tbody>
+                </table>
+            </div><div class="env-diagram-frame">
+                
+                <div>
+                f1: <input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame1-funcname">
+                [parent=<input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame1-parent">]
+                </div>
+            
+                <table class="table">
+                    <tbody>
+                    
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame1-binding0-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame1-binding0-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame1-binding0-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame1-binding1-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame1-binding1-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame1-binding1-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                    
+                <tr>
+                    <td>Return value</td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame1-return">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame1-return-connector">⬤
+                </button>
+            </td>
+                </tr>
+                
+                    </tbody>
+                </table>
+            </div><div class="env-diagram-frame">
+                
+                <div>
+                f2: <input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame2-funcname">
+                [parent=<input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame2-parent">]
+                </div>
+            
+                <table class="table">
+                    <tbody>
+                    
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame2-binding0-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame2-binding0-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame2-binding0-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame2-binding1-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame2-binding1-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame2-binding1-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                    
+                <tr>
+                    <td>Return value</td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame2-return">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame2-return-connector">⬤
+                </button>
+            </td>
+                </tr>
+                
+                    </tbody>
+                </table>
+            </div><div class="env-diagram-frame">
+                
+                <div>
+                f3: <input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame3-funcname">
+                [parent=<input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame3-parent">]
+                </div>
+            
+                <table class="table">
+                    <tbody>
+                    
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame3-binding0-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame3-binding0-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame3-binding0-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame3-binding1-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame3-binding1-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame3-binding1-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                    
+                <tr>
+                    <td>Return value</td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame3-return">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame3-return-connector">⬤
+                </button>
+            </td>
+                </tr>
+                
+                    </tbody>
+                </table>
+            </div><div class="env-diagram-frame">
+                
+                <div>
+                f4: <input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame4-funcname">
+                [parent=<input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame4-parent">]
+                </div>
+            
+                <table class="table">
+                    <tbody>
+                    
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame4-binding0-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame4-binding0-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame4-binding0-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                <tr>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame4-binding1-name"></td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame4-binding1-value">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame4-binding1-connector">⬤
+                </button>
+            </td>
+                </tr>
+            
+                    
+                <tr>
+                    <td>Return value</td>
+                    <td><input type="text" class="env-text-storable" id="env-diagram-nested-calls-diagram-frame4-return">
+                <button class="env-diagram-connector" id="env-diagram-nested-calls-diagram-frame4-return-connector">⬤
+                </button>
+            </td>
+                </tr>
+                
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="storable-status"></div>
+        
+
+
+
+
+<h1 id="hofs">HOFs</h1>
+
+
+
+<h3 id="q2-currying">Q2: Currying</h3>
+
+
+<p>Write a function <code>curry</code> that will curry any two argument function.</p>
+
+
+            <div class="monaco-storable" id="currying_disc_hof-input" style="height:486px;"></div>
+            <a href="javascript:void" id="modal-link-currying_disc_hof-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-currying_disc_hof-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-currying_disc_hof-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def curry(func):\n    &quot;&quot;&quot;\n    Returns a Curried version of a two&#x2d;argument function FUNC.\n    &gt;&gt;&gt; from operator import add, mul, mod\n    &gt;&gt;&gt; curried_add = curry(add)\n    &gt;&gt;&gt; add_three = curried_add(3)\n    &gt;&gt;&gt; add_three(5)\n    8\n    &gt;&gt;&gt; curried_mul = curry(mul)\n    &gt;&gt;&gt; mul_5 = curried_mul(5)\n    &gt;&gt;&gt; mul_5(42)\n    210\n    &gt;&gt;&gt; curry(mod)(123)(10)\n    3\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n\n\n\n\n', "python", "currying_disc_hof-input"));
+            </script>
+        
+
+<p>First, try implementing <code>curry</code> with <code>def</code> statements.
+Then attempt to implement <code>curry</code> in a single line using lambda expressions.</p>
+
+
+
+
+<h1 id="recursion">Recursion</h1>
+
+
+
+<h3 id="q3-subsequences">Q3: Subsequences</h3>
+
+
+<p>A subsequence of a sequence <code>S</code> is a subset of elements from <code>S</code>, in the same
+order they appear in <code>S</code>. Consider the list <code>[1, 2, 3]</code>. Here are a few of its
+subsequences <code>[]</code>, <code>[1, 3]</code>, <code>[2]</code>, and <code>[1, 2, 3]</code>.</p>
+
+<p>Write a function that takes in a list and returns all possible subsequences of that list.
+The subsequences should be returned as a list of lists, where each nested list is a
+subsequence of the original input.</p>
+
+<p>In order to accomplish this, you might first want to write a function <code>insert_into_all</code>
+that takes an item and a list of lists, adds the item to the beginning of each nested list,
+and returns the resulting list.</p>
+
+
+            <div class="monaco-storable" id="subsequences-input" style="height:540px;"></div>
+            <a href="javascript:void" id="modal-link-subsequences-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-subsequences-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-subsequences-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def insert_into_all(item, nested_list):\n    &quot;&quot;&quot;Return a new list consisting of all the lists in nested_list,\n    but with item added to the front of each. You can assume that\n    nested_list is a list of lists.\n\n    &gt;&gt;&gt; nl = [[], [1, 2], [3]]\n    &gt;&gt;&gt; insert_into_all(0, nl)\n    [[0], [0, 1, 2], [0, 3]]\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\ndef subseqs(s):\n    &quot;&quot;&quot;Return a nested list (a list of lists) of all subsequences of S.\n    The subsequences can appear in any order. You can assume S is a list.\n\n    &gt;&gt;&gt; seqs = subseqs([1, 2, 3])\n    &gt;&gt;&gt; sorted(seqs)\n    [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]\n    &gt;&gt;&gt; subseqs([])\n    [[]]\n    &quot;&quot;&quot;\n    if ________________:\n        ________________\n    else:\n        ________________\n        ________________\n\n', "python", "subsequences-input"));
+            </script>
+        
+
+
+<h1 id="oop">OOP</h1>
+
+
+
+<h3 id="q4-bear">Q4: Bear</h3>
+
+
+<p>Implement the <code>SleepyBear</code> and <code>WinkingBear</code> classes so that calling their <code>print</code> method
+matches the doctests. Use as little code as possible and try not to
+repeat any logic from <code>Eye</code> or <code>Bear</code>. Each blank can be filled with just two
+short lines.</p>
+
+<!-- **Discussion Time:** Before writing code, talk about what is different about a
+<code>SleepyBear</code> and a <code>Bear</code>. When using inheritance, you only need to implement
+the differences between the base class and subclass. Then, talk about what is
+different about a <code>WinkingBear</code> and a <code>Bear</code>. Can you think of a way to make
+the bear wink without a new implementation of <code>print</code>? -->
+
+
+            <div class="monaco-storable" id="bear_print-input" style="height:612px;"></div>
+            <a href="javascript:void" id="modal-link-bear_print-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-bear_print-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-bear_print-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('class Eye:\n    &quot;&quot;&quot;An eye.\n\n    &gt;&gt;&gt; Eye().draw()\n    &#x27;0&#x27;\n    &gt;&gt;&gt; print(Eye(False).draw(), Eye(True).draw())\n    0 &#x2d;\n    &quot;&quot;&quot;\n    def __init__(self, closed=False):\n        self.closed = closed\n\n    def draw(self):\n        if self.closed:\n            return &#x27;&#x2d;&#x27;\n        else:\n            return &#x27;0&#x27;\n\nclass Bear:\n    &quot;&quot;&quot;A bear.\n\n    &gt;&gt;&gt; Bear().print()\n    ? 0o0?\n    &quot;&quot;&quot;\n    def __init__(self):\n        self.nose_and_mouth = &#x27;o&#x27;\n\n    def next_eye(self):\n        return Eye()\n\n    def print(self):\n        left, right = self.next_eye(), self.next_eye()\n        print(&#x27;? &#x27; + left.draw() + self.nose_and_mouth + right.draw() + &#x27;?&#x27;)\n', "python", "bear_print-input"));
+            </script>
+        
+
+<div class="page-break"></div>
+
+
+            <div class="monaco-storable" id="bear-input" style="height:666px;"></div>
+            <a href="javascript:void" id="modal-link-bear-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-bear-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-bear-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('class SleepyBear(Bear):\n    &quot;&quot;&quot;A bear with closed eyes.\n\n    &gt;&gt;&gt; SleepyBear().print()\n    ? &#x2d;o&#x2d;?\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\nclass WinkingBear(Bear):\n    &quot;&quot;&quot;A bear whose left eye is different from its right eye.\n\n    &gt;&gt;&gt; WinkingBear().print()\n    ? &#x2d;o0?\n    &quot;&quot;&quot;\n    def __init__(self):\n        "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n    def next_eye(self):\n        "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n', "python", "bear-input"));
+            </script>
+        
+
+<!-- 
+        <button id='toggle-1' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Hint: SleepyBear<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-1">
+Implement a <code>next_eye</code> method that returns an Eye instance that is closed.
+</div> -->
+
+<!-- 
+        <button id='toggle-2' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Hint: WinkingBear<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-2">
+One way to make the bear wink is to track how may times the <code>next_eye</code> method is
+invoked using a new instance attribute and return a closed eye if <code>next_eye</code> has
+been called an even number of times.
+</div> -->
+
+
+<h1 id="linked-lists">Linked Lists</h1>
+
+
+
+<h3 id="q5-linear-sublists">Q5: Linear Sublists</h3>
+
+
+<p><strong>Definition:</strong> A <em>sublist</em> of linked list <code>s</code> is a linked list of some of the
+elements of <code>s</code> in order. For example, <code>&lt;3 6 2 5 1 7&gt;</code> has sublists <code>&lt;3 2 1&gt;</code>
+and <code>&lt;6 2 7&gt;</code> but not <code>&lt;5 6 7&gt;</code>. A <em>linear sublist</em> of a linked list of numbers <code>s</code> is a sublist
+in which the difference between adjacent numbers is always the same. For example
+<code>&lt;2 4 6 8&gt;</code> is a linear sublist of <code>&lt;1 2 3 4 6 9 1 8 5&gt;</code> because the difference
+between each pair of adjacent elements is 2.</p>
+
+<p>Implement <code>linear</code> which takes a linked list of numbers <code>s</code> (either a <code>Link</code>
+instance or <code>Link.empty</code>). It returns the longest linear sublist of <code>s</code>. If two
+linear sublists are tied for the longest, return either one.</p>
+
+
+            <div class="monaco-storable" id="linear-input" style="height:720px;"></div>
+            <a href="javascript:void" id="modal-link-linear-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-linear-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-linear-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def linear(s):\n    &quot;&quot;&quot;Return the longest linear sublist of a linked list s.\n\n    &gt;&gt;&gt; s = Link(9, Link(4, Link(6, Link(7, Link(8, Link(10))))))\n    &gt;&gt;&gt; linear(s)\n    Link(4, Link(6, Link(8, Link(10))))\n    &gt;&gt;&gt; linear(Link(4, Link(5, s)))\n    Link(4, Link(5, Link(6, Link(7, Link(8)))))\n    &gt;&gt;&gt; linear(Link(4, Link(5, Link(4, Link(7, Link(3, Link(2, Link(8))))))))\n    Link(5, Link(4, Link(3, Link(2))))\n    &quot;&quot;&quot;\n    def complete(first, rest):\n        &quot;The longest linear sublist of Link(first, rest) with difference d that starts with first.&quot;\n        if rest is Link.empty:\n            return ____\n        elif ____ == d:\n            return Link(____, complete(____, ____))\n        else:\n            return complete(first, rest.rest)\n    if s is Link.empty:\n        return s\n    longest = Link(s.first) # The longest linear sublist found so far\n    while s is not Link.empty:\n        t = s.rest\n        while t is not Link.empty:\n            d = t.first &#x2d; s.first\n            candidate = ____\n            if length(candidate) &gt; length(longest):\n                longest = candidate\n            t = t.rest\n        s = s.rest\n    return longest\n\ndef length(s):\n    if s is Link.empty:\n        return 0\n    else:\n        return 1 + length(s.rest)\n', "python", "linear-input"));
+            </script>
+        
+
+<!-- 
+        <button id='toggle-3' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Hint: complete function<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-3">
+There are three cases:
+
+<ul>
+  <li>If <code>rest</code> is empty, return a one-element list containing just <code>first</code>.</li>
+  <li>If <code>rest.first</code> is in the linear sublist that starts with <code>first</code>, then build a list that contains <code>first</code>, and <code>rest.first</code>.</li>
+  <li>Otherwise, <code>complete(first, rest.rest)</code>.
+  </div> --></li>
+</ul>
+
+<!-- 
+        <button id='toggle-4' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Hint: while statement<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-4">
+This while loop is creating a <code>candidate</code> linear sublist for every two possible starting values: <code>s.first</code> and <code>t.first</code>. The rest of the linear sublist must be in <code>t.rest</code>.
+</div> -->
+
+
+<h1 id="trees">Trees</h1>
+
+
+
+<h3 id="q6-long-paths">Q6: Long Paths</h3>
+
+
+<p>Implement <code>long_paths</code>, which returns a list of all <em>paths</em> in a tree with
+length at least <code>n</code>. A path in a tree is a list of node labels that starts with
+the root and ends at a leaf. Each subsequent element must be from a label of a
+branch of the previous value's node. The <em>length</em> of a path is the number of
+edges in the path (i.e. one less than the number of nodes in the path).  Paths
+are ordered in the output list from left to right in the tree. See the doctests
+for some examples.</p>
+
+
+            <div class="monaco-storable" id="long-paths-list-disc-input" style="height:1080px;"></div>
+            <a href="javascript:void" id="modal-link-long-paths-list-disc-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-long-paths-list-disc-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-long-paths-list-disc-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def long_paths(t, n):\n    &quot;&quot;&quot;Return a list of all paths in t with length at least n.\n\n    &gt;&gt;&gt; long_paths(Tree(1), 0)\n    [[1]]\n    &gt;&gt;&gt; long_paths(Tree(1), 1)\n    []\n    &gt;&gt;&gt; t = Tree(3, [Tree(4), Tree(4), Tree(5)])\n    &gt;&gt;&gt; left = Tree(1, [Tree(2), t])\n    &gt;&gt;&gt; mid = Tree(6, [Tree(7, [Tree(8)]), Tree(9)])\n    &gt;&gt;&gt; right = Tree(11, [Tree(12, [Tree(13, [Tree(14)])])])\n    &gt;&gt;&gt; whole = Tree(0, [left, Tree(13), mid, right])\n    &gt;&gt;&gt; print(whole)\n    0\n      1\n        2\n        3\n          4\n          4\n          5\n      13\n      6\n        7\n          8\n        9\n      11\n        12\n          13\n            14\n    &gt;&gt;&gt; for path in long_paths(whole, 2):\n    ...     print(path)\n    ...\n    [0, 1, 2]\n    [0, 1, 3, 4]\n    [0, 1, 3, 4]\n    [0, 1, 3, 5]\n    [0, 6, 7, 8]\n    [0, 6, 9]\n    [0, 11, 12, 13, 14]\n    &gt;&gt;&gt; for path in long_paths(whole, 3):\n    ...     print(path)\n    ...\n    [0, 1, 3, 4]\n    [0, 1, 3, 4]\n    [0, 1, 3, 5]\n    [0, 6, 7, 8]\n    [0, 11, 12, 13, 14]\n    &gt;&gt;&gt; long_paths(whole, 4)\n    [[0, 11, 12, 13, 14]]\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n\n', "python", "long-paths-list-disc-input"));
+            </script>
+        
+
+
+<h1 id="iterators-amp-generators">Iterators &amp; Generators</h1>
+
+
+
+<h3 id="q7-something-different">Q7: Something Different</h3>
+
+
+<p>Implement <code>differences</code>, a generator function that takes <code>t</code>, a non-empty
+iterator over numbers. It yields the differences between each pair of adjacent
+values from <code>t</code>. If <code>t</code> iterates over a positive finite number of values <code>n</code>,
+then <code>differences</code> should yield <code>n&#x2d;1</code> times.</p>
+
+
+            <div class="monaco-storable" id="differences-input" style="height:486px;"></div>
+            <a href="javascript:void" id="modal-link-differences-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-differences-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-differences-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def differences(t):\n    &quot;&quot;&quot;Yield the differences between adjacent values from iterator t.\n\n    &gt;&gt;&gt; list(differences(iter([5, 2, &#x2d;100, 103])))\n    [&#x2d;3, &#x2d;102, 203]\n    &gt;&gt;&gt; next(differences(iter([39, 100])))\n    61\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n', "python", "differences-input"));
+            </script>
+        
+
+<!-- 
+        <button id='toggle-5' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Hint<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-5">
+Add to the following implementation by initializing and updating
+<code>previous_x</code> so that it is always bound to the value of <code>t</code> that came before
+<code>x</code>.
+
+<pre><code class="python">for x in t:
+    yield x &#x2d; previous_x</code></pre>
+
+
+</div> -->
+
+
+<h1 id="sql">SQL</h1>
+
+
+
+<h3 id="q8-a-secret-message">Q8: A Secret Message</h3>
+
+
+<p>A substitution cipher replaces each word with another word in a table in order
+to encrypt a message. To decode an encrypted message, replace each word <code>x</code> with
+its corresponding <code>y</code> in a code table.</p>
+
+<p>Write a select statement to decode the <code>original</code> message <em>It's The End</em>
+using the <code>code</code> table.</p>
+
+
+            <div class="monaco-storable" id="end-input" style="height:396px;"></div>
+            <a href="javascript:void" id="modal-link-end-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-end-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-end-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('CREATE TABLE original AS\n  SELECT 1 AS n, &quot;It&#x27;s&quot; AS word UNION\n  SELECT 2     , &quot;The&quot;      UNION\n  SELECT 3     , &quot;End&quot;;\n\nCREATE TABLE code AS\n  SELECT &quot;Up&quot; AS x, &quot;Down&quot; AS y UNION\n  SELECT &quot;Now&quot;    , &quot;Home&quot; UNION\n  SELECT &quot;It&#x27;s&quot;   , &quot;What&quot; UNION\n  SELECT &quot;See&quot;    , &quot;Do&quot; UNION\n  SELECT &quot;Can&quot;    , &quot;See&quot; UNION\n  SELECT &quot;End&quot;    , &quot;Now&quot; UNION\n  SELECT &quot;What&quot;   , &quot;You&quot; UNION\n  SELECT &quot;The&quot;    , &quot;Happens&quot; UNION\n  SELECT &quot;Love&quot;   , &quot;Scheme&quot; UNION\n  SELECT &quot;Not&quot;    , &quot;Mess&quot; UNION\n  SELECT &quot;Happens&quot;, &quot;Go&quot;;\n\nSELECT "REPLACE THIS LINE WITH YOUR SOLUTION";\n\n', "sql", "end-input"));
+            </script>
+        
+
+<!-- 
+        <button id='toggle-6' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Hint: first message<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-6">
+
+<p>Join the <code>original</code> and <code>code</code> tables and make sure that the joined roles have
+the same <code>word</code> and <code>x</code>.</p>
+
+</div> -->
+
+<p>What happens now? Write another select statement to decode this encrypted
+message using the same <code>code</code> table.</p>
+
+
+            <div class="monaco-storable" id="home-input" style="height:450px;"></div>
+            <a href="javascript:void" id="modal-link-home-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-home-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-home-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('CREATE TABLE original AS\n  SELECT 1 AS n, &quot;It&#x27;s&quot; AS word UNION\n  SELECT 2     , &quot;The&quot;      UNION\n  SELECT 3     , &quot;End&quot;;\n\nCREATE TABLE code AS\n  SELECT &quot;Up&quot; AS x, &quot;Down&quot; AS y UNION\n  SELECT &quot;Now&quot;    , &quot;Home&quot; UNION\n  SELECT &quot;It&#x27;s&quot;   , &quot;What&quot; UNION\n  SELECT &quot;See&quot;    , &quot;Do&quot; UNION\n  SELECT &quot;Can&quot;    , &quot;See&quot; UNION\n  SELECT &quot;End&quot;    , &quot;Now&quot; UNION\n  SELECT &quot;What&quot;   , &quot;You&quot; UNION\n  SELECT &quot;The&quot;    , &quot;Happens&quot; UNION\n  SELECT &quot;Love&quot;   , &quot;Scheme&quot; UNION\n  SELECT &quot;Not&quot;    , &quot;Mess&quot; UNION\n  SELECT &quot;Happens&quot;, &quot;Go&quot;;\n\nSELECT "REPLACE THIS LINE WITH YOUR SOLUTION";\n\n\n\n\n\n', "sql", "home-input"));
+            </script>
+        
+
+<!-- 
+        <button id='toggle-7' class='btn btn-outline btn-lg alwaystoggle toggle'>
+        Hint: second message<noscript> (enable JavaScript)</noscript>
+        </button>
+        <div class="solution toggle-7">
+
+<p>Join <code>original</code> with <code>code AS a</code> and <code>code AS b</code> to create six-column rows like:
+<code>2|The|The|Happens|Happens|Go</code>, The <em>Go</em> at the end is part of the decoded message.</p>
+
+</div> -->
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#environment-diagrams">Environment Diagrams</a></li>
+  <ul>
+    <li><a href="#q1-nested-calls-diagrams">Q1: Nested Calls Diagrams</a></li>
+  </ul>
+  <li><a href="#hofs">HOFs</a></li>
+  <ul>
+    <li><a href="#q2-currying">Q2: Currying</a></li>
+  </ul>
+  <li><a href="#recursion">Recursion</a></li>
+  <ul>
+    <li><a href="#q3-subsequences">Q3: Subsequences</a></li>
+  </ul>
+  <li><a href="#oop">OOP</a></li>
+  <ul>
+    <li><a href="#q4-bear">Q4: Bear</a></li>
+  </ul>
+  <li><a href="#linked-lists">Linked Lists</a></li>
+  <ul>
+    <li><a href="#q5-linear-sublists">Q5: Linear Sublists</a></li>
+  </ul>
+  <li><a href="#trees">Trees</a></li>
+  <ul>
+    <li><a href="#q6-long-paths">Q6: Long Paths</a></li>
+  </ul>
+  <li><a href="#iterators-amp-generators">Iterators &amp; Generators</a></li>
+  <ul>
+    <li><a href="#q7-something-different">Q7: Something Different</a></li>
+  </ul>
+  <li><a href="#sql">SQL</a></li>
+  <ul>
+    <li><a href="#q8-a-secret-message">Q8: A Secret Message</a></li>
+  </ul>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <!-- <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/sp26/assets/js/network_storage.js"></script>
+    <script src="/sp26/assets/js/code_tabindex.js"></script>
+    <script src="/sp26/assets/js/storable.js"></script>
+    <script src="/sp26/assets/js/editor.js"></script>
+    <script src="/sp26/assets/js/copy-button.js"></script>
+    <script src="/sp26/assets/js/env-diagram.js"></script>
+    
+<!-- <script src="/assets/js/sketchy.js"></script> -->
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>

@@ -245,7 +245,7 @@ alphabetical order. To test what table your query outputs, press the green play 
             
             <b>Your Answer</b>
             
-            <div class="monaco-storable" id="opening-input" style="height:126px;"></div>
+            <div class="monaco-storable" id="opening-input" style="height:216px;"></div>
             <a href="javascript:void" id="modal-link-opening-input">Run in 61A Code</a>
             <div class="modal fade" id="modal-opening-input" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
@@ -261,7 +261,7 @@ alphabetical order. To test what table your query outputs, press the green play 
             </div>
             <div class="storable-status"></div>
             <script>
-                $(() => activateEditor('&#x2d;&#x2d; Pizza places that open before 1pm in alphabetical order\n\n\n\nSELECT "REPLACE THIS LINE WITH YOUR SOLUTION";\n\n', "sql", "opening-input"));
+                $(() => activateEditor('&#x2d;&#x2d; Pizza places that open before 1pm in alphabetical order\n\n\n\nSELECT "REPLACE THIS LINE WITH YOUR SOLUTION";\n\n\n\n\n\n\n\n\n\n', "sql", "opening-input"));
             </script>
         
             <div class="sol-highlight">
@@ -270,6 +270,11 @@ alphabetical order. To test what table your query outputs, press the green play 
 <pre><code>&#x2d;&#x2d; Pizza places that open before 1pm in alphabetical order
 CREATE TABLE opening AS
   SELECT name FROM pizzas WHERE open &lt; 13 ORDER BY name DESC;
+
+
+
+
+
 </code></pre>
 
             </div>
@@ -339,7 +344,7 @@ rows by decreasing duration.</p>
             
             <b>Your Answer</b>
             
-            <div class="monaco-storable" id="study-input" style="height:126px;"></div>
+            <div class="monaco-storable" id="study-input" style="height:216px;"></div>
             <a href="javascript:void" id="modal-link-study-input">Run in 61A Code</a>
             <div class="modal fade" id="modal-study-input" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
@@ -355,7 +360,7 @@ rows by decreasing duration.</p>
             </div>
             <div class="storable-status"></div>
             <script>
-                $(() => activateEditor('&#x2d;&#x2d; Pizza places and the duration of a study break that ends at 14 o&#x27;clock\n\n\n\nSELECT "REPLACE THIS LINE WITH YOUR SOLUTION";\n\n', "sql", "study-input"));
+                $(() => activateEditor('&#x2d;&#x2d; Pizza places and the duration of a study break that ends at 14 o&#x27;clock\n\n\n\nSELECT "REPLACE THIS LINE WITH YOUR SOLUTION";\n\n\n\n\n\n\n\n\n\n', "sql", "study-input"));
             </script>
         
             <div class="sol-highlight">
@@ -364,6 +369,11 @@ rows by decreasing duration.</p>
 <pre><code>&#x2d;&#x2d; Pizza places and the duration of a study break that ends at 14 o&#x27;clock
 CREATE TABLE study AS
   SELECT name, MAX(14 &#x2d; open, 0) AS duration FROM pizzas ORDER BY duration DESC;
+
+
+
+
+
 </code></pre>
 
             </div>
