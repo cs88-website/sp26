@@ -599,8 +599,8 @@ HAVING _____;</code></pre>
 
 <pre><code>CREATE TABLE big AS
 <div class="sol-highlight">  SELECT course
-  FROM finals, sizes
-  WHERE hall = room
+  FROM finals JOIN sizes
+  ON hall = room
   GROUP BY course
   HAVING SUM(seats) &gt;= 1000;</div></code></pre>
 
@@ -662,8 +662,8 @@ GROUP BY _____;</code></pre>
 
 <pre><code>CREATE TABLE remaining AS
 <div class="sol-highlight">  SELECT course, SUM(seats) &#x2d; MAX(seats) AS remaining
-  FROM finals, sizes
-  WHERE hall = room
+  FROM finals JOIN sizes
+  ON hall = room
   GROUP BY course;</div></code></pre>
 
 </solution>
@@ -726,8 +726,8 @@ GROUP BY _____;</code></pre>
 
 <pre><code>CREATE TABLE sharing AS
 <div class="sol-highlight">  SELECT a.course, COUNT(DISTINCT a.hall) AS shared
-  FROM finals AS a, finals AS b
-  WHERE a.hall = b.hall AND a.course != b.course
+  FROM finals AS a JOIN finals AS b
+  ON a.hall = b.hall AND a.course != b.course
   GROUP BY a.course;</div></code></pre>
 
 </solution>

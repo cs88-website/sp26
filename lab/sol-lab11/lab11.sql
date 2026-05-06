@@ -31,22 +31,22 @@ INSERT INTO sizes VALUES
 
 CREATE TABLE big AS
   SELECT course
-  FROM finals, sizes
-  WHERE hall = room
+  FROM finals JOIN sizes
+  ON hall = room
   GROUP BY course
   HAVING SUM(seats) >= 1000;
 
 
 CREATE TABLE remaining AS
   SELECT course, SUM(seats) - MAX(seats) AS remaining
-  FROM finals, sizes
-  WHERE hall = room
+  FROM finals JOIN sizes
+  ON hall = room
   GROUP BY course;
 
 
 CREATE TABLE sharing AS
   SELECT a.course, COUNT(DISTINCT a.hall) AS shared
-  FROM finals AS a, finals AS b
-  WHERE a.hall = b.hall AND a.course != b.course
+  FROM finals AS a JOIN finals AS b
+  ON a.hall = b.hall AND a.course != b.course
   GROUP BY a.course;
 

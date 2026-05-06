@@ -388,7 +388,7 @@ closing time to the time of a snack. The rows may appear in any order.</p>
 <p>The <code>||</code> operator in SQL concatenates two strings together, just like <code>+</code> in Python.</p>
 
 
-            <div class="monaco-storable" id="late-input" style="height:162px;"></div>
+            <div class="monaco-storable" id="late-input" style="height:180px;"></div>
             <a href="javascript:void" id="modal-link-late-input">Run in 61A Code</a>
             <div class="modal fade" id="modal-late-input" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
@@ -404,11 +404,12 @@ closing time to the time of a snack. The rows may appear in any order.</p>
             </div>
             <div class="storable-status"></div>
             <script>
-                $(() => activateEditor('&#x2d;&#x2d; Pizza places that are open for late&#x2d;night&#x2d;snack time and when they close\n\n\n\n  SELECT ____ || &quot; closes at &quot; || ____ AS status\n  FROM ____\n  WHERE ____;\n\n', "sql", "late-input"));
+                $(() => activateEditor('&#x2d;&#x2d; Pizza places that are open for late&#x2d;night&#x2d;snack time and when they close\n\n\n\n  SELECT ____ || &quot; closes at &quot; || ____ AS status\n  FROM ____ JOIN ____\n  ON ________\n  WHERE ____;\n\n', "sql", "late-input"));
             </script>
         
 
-<!-- 
+
+
         <button id='toggle-3' class='btn btn-outline btn-lg alwaystoggle toggle'>
         Hint: Referencing the Snack Time<noscript> (enable JavaScript)</noscript>
         </button>
@@ -419,16 +420,17 @@ To compare a pizza place's <code>close</code> time to the time of a snack:
   <li>join the <code>pizzas</code> and <code>meals</code> tables using <code>FROM pizzas, meals</code></li>
   <li>use only rows where the <code>meal</code> is a <code>&quot;snack&quot;</code></li>
   <li>compare the <code>time</code> of the snack to the <code>close</code> of the pizza place.
-  </div> --></li>
+  </div></li>
 </ul>
 
-<!-- 
+
         <button id='toggle-4' class='btn btn-outline btn-lg alwaystoggle toggle'>
         Hint: Composing a Sentence<noscript> (enable JavaScript)</noscript>
         </button>
         <div class="solution toggle-4">
 Use <code>name || &quot; closes at &quot; || close</code> to create the sentences in the resulting table. The <code>||</code> operator concatenates values into strings.
-</div> -->
+</div>
+
 <script>
     $('.alwaystoggle').css('display', 'inline-block');
     $('.alwaystoggle').click(function() {
